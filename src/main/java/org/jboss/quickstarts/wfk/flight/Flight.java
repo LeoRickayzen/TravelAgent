@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @NamedQueries({
-	@NamedQuery(name = Flight.FIND_ALL, query = "SELECT f FROM Flight f ORDER BY f.flightnumber DESC")
+	@NamedQuery(name = Flight.FIND_ALL, query = "SELECT f FROM Flight f ORDER BY f.flightNumber DESC")
 })
 @XmlRootElement
 @Table(name="flight", uniqueConstraints = @UniqueConstraint(columnNames = "flightNumber"))
@@ -33,7 +33,7 @@ public class Flight implements Serializable {
 	
 	@NotNull
 	@Pattern(regexp = "^([a-z]|\\d){5}$")
-	@Column(name = "flightnumber")
+	@Column(name = "flightNumber")
 	private String flightNumber;
 	
 	@NotNull
