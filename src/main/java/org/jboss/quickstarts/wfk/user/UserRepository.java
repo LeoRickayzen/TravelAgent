@@ -52,7 +52,7 @@ public class UserRepository {
         return user;
     }
     
-    User delete(User user) throws Exception {
+    User delete(User user) throws Exception{
         log.info("UserRepository.delete() - Deleting " + user.getId());
 
         if (user.getId() != null) {
@@ -61,6 +61,7 @@ public class UserRepository {
 
         } else {
             log.info("UserRepository.delete() - No ID was found so can't Delete.");
+            throw new Exception("No user with that ID");
         }
 
         return user;

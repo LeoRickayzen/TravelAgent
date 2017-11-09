@@ -17,6 +17,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -25,6 +26,7 @@ import org.jboss.quickstarts.wfk.util.RestServiceException;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
@@ -94,14 +96,33 @@ public class UserRestService {
     @DELETE
     @ApiOperation(value = "delete a user from the database")
     @Path("/{id}")
-    public Response deleteUser(long id){
-    	return null;
+    public Response deleteUser(
+    		@ApiParam(value = "Id of user to be deleted", allowableValues = "range[0, infinity]", required = true)
+    		@PathParam("id") 
+    		long id){
+    	User user = service.findById(id);
+    	try {
+			service.delete(user);
+			return Response.ok(user).build();
+		} catch (Exception e) {
+			return Response.notModified("no user with that id").build();
+		}
     }
     
     @GET
     @ApiOperation(value = "get a user by it's id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "User retreived successfully"),
+            @ApiResponse(code = 204, message = "No user with that ID")
+    })
     @Path("/{id}")
-    public Response findUser(){
-    	return null;
+    public Response findUser(@ApiParam(value = "Id of user to be fetched", allowableValues = "range[0, infinity]", required = true)
+    		@PathParam("id") long id){
+    	User user = service.findById(id);
+    	if(user == null){
+    		return Response.noContent().build();
+    	}else{
+    		return Response.ok(user).build();
+    	}
     }
 }

@@ -65,4 +65,8 @@ public class UserService {
 	        // Either update the contact or add it if it can't be found.
 	        return crud.update(user);
 	    }
+	    
+	    void delete(User user) throws Exception{
+	    	crud.delete(user);
+	    }
 }
