@@ -12,8 +12,10 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -29,7 +31,7 @@ import io.swagger.annotations.ApiResponses;
 @Path("/users")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/users", description = "Operations about contacts")
+@Api(value = "/users", description = "Operations about users")
 @Stateless
 public class UserRestService {
 	@Inject
@@ -78,8 +80,7 @@ public class UserRestService {
                 responseObj.put(violation.getPropertyPath().toString(), violation.getMessage());
             }
             
-            ce.printStackTrace();
-            throw new RestServiceException("Bad Request", responseObj, Response.Status.BAD_REQUEST, ce);
+            throw new RestServiceException("Bad Request" , responseObj, Response.Status.BAD_REQUEST, ce);
 		
     	} catch (ValidationException e) {
     		e.printStackTrace();
@@ -90,15 +91,16 @@ public class UserRestService {
     	return null;
     }
     
-    
+    @DELETE
+    @ApiOperation(value = "delete a user from the database")
+    @Path("/{id}")
     public Response deleteUser(long id){
     	return null;
     }
     
-    public Response updateUser(){
-    	return null;
-    }
-    
+    @GET
+    @ApiOperation(value = "get a user by it's id")
+    @Path("/{id}")
     public Response findUser(){
     	return null;
     }
