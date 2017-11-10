@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -37,5 +38,11 @@ public class FlightRestService {
     	flights.retainAll(service.findAll());
 		return Response.ok(flights).build();
     }
-	
+    
+    @POST
+    @ApiOperation(value = "Create a flight")
+    public Response createFlight(Flight flight){
+    	Flight createdFlight = service.createFlight(flight);
+    	return Response.accepted(createdFlight).build();
+    }
 }

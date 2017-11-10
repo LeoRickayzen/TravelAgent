@@ -25,6 +25,10 @@ public class FlightService {
 		client = new ResteasyClientBuilder().build();
 	}
 	
+	Flight createFlight(Flight flight){
+		return crud.createFlight(flight);
+	}
+	
 	List<Flight> findAll(){
 		return crud.findAllOrderedByNumber();
 	}

@@ -53,7 +53,7 @@ public class ContactServiceApplication extends Application {
         beanConfig.setTitle("JBoss Contacts Swagger");
         beanConfig.setDescription("JBoss WFK Contacts Swagger Quickstart");
         //Add additional RESTService containing packages here, separated by commas:
-        // "org.jboss.quickstarts.wfk.contact, org.jboss.quickstarts.wfk.other"
+        // "org.jboss.quickstarts.wfk.contact,org.jboss.quickstarts.wfk.other"
         beanConfig.setResourcePackage("org.jboss.quickstarts.wfk.contact,org.jboss.quickstarts.wfk.user,org.jboss.quickstarts.wfk.flight");
         beanConfig.setScan(true);
 

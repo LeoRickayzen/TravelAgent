@@ -22,5 +22,10 @@ public class FlightRepository {
     	TypedQuery<Flight> query = em.createNamedQuery(Flight.FIND_ALL, Flight.class);
 		return query.getResultList();
     }
+    
+    Flight createFlight(Flight flight){
+    	em.persist(flight);
+    	return flight;
+    }
 	
 }
