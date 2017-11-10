@@ -25,4 +25,9 @@ public class BookingRepository {
     	em.persist(booking);
     	return booking;
     }
+    
+    Booking deleteBooking(Booking booking){
+    	em.remove(booking);
+    	return booking;
+    }
 }

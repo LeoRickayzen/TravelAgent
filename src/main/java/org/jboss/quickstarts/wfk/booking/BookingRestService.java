@@ -7,6 +7,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -44,5 +45,12 @@ public class BookingRestService {
     public Response createBookings(Booking booking){
     	Booking createdBooking = service.createBooking(booking);
     	return Response.accepted(createdBooking).build();
+    }
+    
+    @DELETE
+    @ApiOperation(value = "delete a booking")
+    public Response deleteBooking(Booking booking){
+    	Booking deletedBooking = service.deleteBooking(booking);
+    	return Response.accepted(deletedBooking).build();
     }
 }

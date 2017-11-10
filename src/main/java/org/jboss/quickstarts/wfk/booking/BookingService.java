@@ -30,4 +30,9 @@ public class BookingService {
 		crud.createBooking(booking);
 		return booking;
 	}
+	
+	Booking deleteBooking(Booking booking){
+		crud.deleteBooking(booking);
+		return booking;
+	}
 }
