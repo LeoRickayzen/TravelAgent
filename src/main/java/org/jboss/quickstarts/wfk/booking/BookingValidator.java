@@ -1,5 +1,35 @@
 package org.jboss.quickstarts.wfk.booking;
 
-public class BookingValidator {
+import javax.inject.Inject;
+import javax.validation.Validator;
 
+import org.jboss.quickstarts.wfk.flight.FlightRepository;
+import org.jboss.quickstarts.wfk.user.UserRepository;
+
+public class BookingValidator {
+	
+	@Inject
+    private Validator validator;
+
+    @Inject
+    private FlightRepository crud;
+    
+    private UserRepository ccrud;
+	
+    void validateBooking(Booking booking){
+    	flightExists(booking.getFlightID());
+    	customerExists(booking.getCustomerID());
+    }
+    
+	void flightExists(String flightNumber) throws InvalidCredentialsException{
+		if(!(crud.findByNumber(flightNumber) == null)){
+			throw new InvalidCredentialsException("invalid flight number");
+		}
+	}
+	
+	void customerExists(Long customerID) throws InvalidCredentialsException{
+		if(!(ccrud.findById(customerID) == null)){
+			throw new InvalidCredentialsException("invalid customer id");
+		}
+	}
 }

@@ -17,7 +17,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @NamedQueries({
-	@NamedQuery(name = Flight.FIND_ALL, query = "SELECT f FROM Flight f ORDER BY f.flightNumber DESC")
+	@NamedQuery(name = Flight.FIND_ALL, query = "SELECT f FROM Flight f ORDER BY f.flightNumber DESC"),
+	@NamedQuery(name = Flight.FIND_BY_NUMBER, query = "SELECT f FROM Flight f WHERE f.flightNumber = :number")
 })
 @XmlRootElement
 @Table(name="flight", uniqueConstraints = @UniqueConstraint(columnNames = "flightNumber"))
@@ -26,6 +27,7 @@ public class Flight implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	public static final String FIND_ALL = "Flight.findAll";
+	public static final String FIND_BY_NUMBER = "Flight.findByNumber";
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE)
@@ -37,10 +39,12 @@ public class Flight implements Serializable {
 	private String flightNumber;
 	
 	@NotNull
+	@Pattern(regexp = "^[A-Z]{3}$")
 	@Column(name = "departure")
 	private String departure;
 	
 	@NotNull
+	@Pattern(regexp = "^[A-Z]{3}$")
 	@Column(name = "arrival")
 	private String arrival;
 

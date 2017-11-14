@@ -25,11 +25,23 @@ public class FlightService {
 		client = new ResteasyClientBuilder().build();
 	}
 	
-	Flight createFlight(Flight flight){
-		return crud.createFlight(flight);
+	Flight createFlight(Flight flight) throws InvalidDestinationException{
+		if(!validator.departIsDifferent(flight)){
+			return crud.createFlight(flight);
+		}else{
+			throw new InvalidDestinationException("destination must be different from point of departure");
+		}
 	}
 	
 	List<Flight> findAll(){
 		return crud.findAllOrderedByNumber();
+	}
+
+	public Flight deleteBooking(Flight flight) {
+		return crud.deleteFlight(flight);
+	}
+	
+	public Flight findById(long id){
+		return crud.findFlightById(id);
 	}
 }

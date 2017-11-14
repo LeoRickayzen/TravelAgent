@@ -20,21 +20,21 @@ public class UserRepository {
     @Inject
     private EntityManager em;
     
-    List<User> findAllOrderedByName(){
+    public List<User> findAllOrderedByName(){
     	TypedQuery<User> query = em.createNamedQuery(User.FIND_ALL, User.class);
         return query.getResultList();
     }
     
-    User findById(Long id){
+    public User findById(Long id){
     	return em.find(User.class, id);
     }
     
-    User findByEmail(String email) {
+    public User findByEmail(String email) {
         TypedQuery<User> query = em.createNamedQuery(User.FIND_BY_EMAIL, User.class).setParameter("email", email);
         return query.getSingleResult();
     }
     
-    User create(User user) throws ConstraintViolationException, ValidationException, Exception {
+    public User create(User user) throws ConstraintViolationException, ValidationException, Exception {
         log.info("UserRepository.create() - Creating " + user.getFirstName() + " " + user.getLastName());
 
         // Write the contact to the database.
@@ -43,7 +43,7 @@ public class UserRepository {
         return user;
     }
     
-    User update(User user) throws ConstraintViolationException, ValidationException, Exception {
+    public User update(User user) throws ConstraintViolationException, ValidationException, Exception {
         log.info("UserRepository.update() - Updating " + user.getFirstName() + " " + user.getLastName());
 
         // Either update the contact or add it if it can't be found.
@@ -52,7 +52,7 @@ public class UserRepository {
         return user;
     }
     
-    User delete(User user) throws Exception{
+    public User delete(User user) throws Exception{
         log.info("UserRepository.delete() - Deleting " + user.getId());
 
         if (user.getId() != null) {

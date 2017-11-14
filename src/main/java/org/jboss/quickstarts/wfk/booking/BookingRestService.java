@@ -1,11 +1,16 @@
 package org.jboss.quickstarts.wfk.booking;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.ValidationException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -16,6 +21,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.jboss.quickstarts.wfk.flight.FlightService;
+import org.jboss.quickstarts.wfk.util.RestServiceException;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -43,14 +49,25 @@ public class BookingRestService {
     @POST
     @ApiOperation(value = "Create a booking")
     public Response createBookings(Booking booking){
-    	Booking createdBooking = service.createBooking(booking);
-    	return Response.accepted(createdBooking).build();
+    	try{
+        	service.createBooking(booking);
+    	}catch(ConstraintViolationException e){
+    		Map<String, String> responseObj = new HashMap<>();
+
+            for (ConstraintViolation<?> violation : e.getConstraintViolations()) {
+                responseObj.put(violation.getPropertyPath().toString(), violation.getMessage());
+            }
+            throw new RestServiceException("Bad Request", responseObj, Response.Status.BAD_REQUEST, e);
+    	}catch(Exception e){
+    		throw new RestServiceException(e.getMessage());
+    	}
+    	return Response.accepted(booking).build();
     }
     
     @DELETE
     @ApiOperation(value = "delete a booking")
     public Response deleteBooking(Booking booking){
-    	Booking deletedBooking = service.deleteBooking(booking);
-    	return Response.accepted(deletedBooking).build();
+    	service.deleteBooking(booking);
+    	return Response.accepted(booking).build();
     }
 }

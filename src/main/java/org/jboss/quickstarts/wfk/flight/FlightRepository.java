@@ -8,6 +8,7 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
+import org.jboss.quickstarts.wfk.contact.Contact;
 import org.jboss.quickstarts.wfk.user.User;
 
 public class FlightRepository {
@@ -18,14 +19,27 @@ public class FlightRepository {
     @Inject
     private EntityManager em;
     
-    List<Flight> findAllOrderedByNumber(){
+    public List<Flight> findAllOrderedByNumber(){
     	TypedQuery<Flight> query = em.createNamedQuery(Flight.FIND_ALL, Flight.class);
 		return query.getResultList();
     }
     
-    Flight createFlight(Flight flight){
+    public Flight createFlight(Flight flight){
     	em.persist(flight);
     	return flight;
     }
-	
+    
+    public Flight deleteFlight(Flight flight){
+    	em.remove(flight);
+    	return flight;
+    }
+    
+    public Flight findByNumber(String id){
+    	TypedQuery<Flight> query = em.createNamedQuery(Flight.FIND_BY_NUMBER, Flight.class).setParameter("number", id);
+        return query.getSingleResult();
+    }
+    
+    public Flight findFlightById(Long id){
+    	return em.find(Flight.class, id);
+    }
 }
