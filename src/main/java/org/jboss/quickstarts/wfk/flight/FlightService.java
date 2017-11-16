@@ -25,12 +25,9 @@ public class FlightService {
 		client = new ResteasyClientBuilder().build();
 	}
 	
-	Flight createFlight(Flight flight) throws InvalidDestinationException{
-		if(!validator.departIsDifferent(flight)){
-			return crud.createFlight(flight);
-		}else{
-			throw new InvalidDestinationException("destination must be different from point of departure");
-		}
+	Flight createFlight(Flight flight) throws InvalidRouteException, FlightNumberExistsException{	
+		validator.validateFlight(flight);	
+		return crud.createFlight(flight);
 	}
 	
 	List<Flight> findAll(){

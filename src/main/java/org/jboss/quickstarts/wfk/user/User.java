@@ -3,6 +3,7 @@ package org.jboss.quickstarts.wfk.user;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -10,6 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.jboss.quickstarts.wfk.booking.Booking;
 import org.jboss.quickstarts.wfk.contact.Contact;
 
 /**
@@ -67,6 +69,9 @@ public class User implements Serializable {
 	@NotNull
 	private Boolean verified = false;
 	
+	@OneToMany(mappedBy="user")
+	private Set<Booking> bookings;
+	
 	public Long getId() {
         return id;
     }
@@ -121,6 +126,14 @@ public class User implements Serializable {
     
     public void setVerified(Boolean verified){
     	this.verified = verified;
+    }
+    
+    public void setBookings(Set<Booking> bookings){
+    	this.bookings = bookings;
+    }
+    
+    public Set<Booking> getBookings(){
+    	return bookings;
     }
     
     @Override

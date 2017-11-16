@@ -1,6 +1,7 @@
 package org.jboss.quickstarts.wfk.flight;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,11 +10,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import org.jboss.quickstarts.wfk.booking.Booking;
 
 @Entity
 @NamedQueries({
@@ -47,7 +51,10 @@ public class Flight implements Serializable {
 	@Pattern(regexp = "^[A-Z]{3}$")
 	@Column(name = "arrival")
 	private String arrival;
-
+	
+	@OneToMany(mappedBy="Flight")
+	private Set<Booking> bookings;
+	
 	public long getId() {
 		return id;
 	}
@@ -80,5 +87,11 @@ public class Flight implements Serializable {
 		this.arrival = arrival;
 	}
 	
-	
+	public void setBookings(Set<Booking> bookings){
+    	this.bookings = bookings;
+    }
+    
+    public Set<Booking> getBookings(){
+    	return bookings;
+    }
 }

@@ -60,14 +60,13 @@ public class FlightRestService {
                 responseObj.put(violation.getPropertyPath().toString(), violation.getMessage());
             }
             throw new RestServiceException("Bad Request", responseObj, Response.Status.BAD_REQUEST, e);
-    	}catch(Exception e){
-    		throw new RestServiceException(e.getMessage());
     	}
     	return Response.accepted(createdFlight).build();
     }
     
     @DELETE
     @ApiOperation(value = "Delete a flight")
+    @Path("/{id}")
     public Response deleteFlight(@ApiParam(value = "Id of user to be deleted", allowableValues = "range[0, infinity]", required = true)
 	@PathParam("id") 
 	long id){

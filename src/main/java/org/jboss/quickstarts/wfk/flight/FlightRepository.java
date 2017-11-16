@@ -8,9 +8,6 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
-import org.jboss.quickstarts.wfk.contact.Contact;
-import org.jboss.quickstarts.wfk.user.User;
-
 public class FlightRepository {
 
 	@Inject
@@ -34,8 +31,9 @@ public class FlightRepository {
     	return flight;
     }
     
-    public Flight findByNumber(String id){
-    	TypedQuery<Flight> query = em.createNamedQuery(Flight.FIND_BY_NUMBER, Flight.class).setParameter("number", id);
+    public Flight findByNumber(String flightNumber){
+    	System.out.println("zzzzz: " + flightNumber);
+    	TypedQuery<Flight> query = em.createNamedQuery(Flight.FIND_BY_NUMBER, Flight.class).setParameter("number", flightNumber);
         return query.getSingleResult();
     }
     

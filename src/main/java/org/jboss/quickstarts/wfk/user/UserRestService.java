@@ -22,6 +22,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.jboss.quickstarts.wfk.contact.UniqueEmailException;
 import org.jboss.quickstarts.wfk.util.RestServiceException;
 
 import io.swagger.annotations.Api;
@@ -84,8 +85,9 @@ public class UserRestService {
             
             throw new RestServiceException("Bad Request" , responseObj, Response.Status.BAD_REQUEST, ce);
 		
-    	} catch (ValidationException e) {
+    	} catch (UniqueEmailException e) {
     		e.printStackTrace();
+    		throw new RestServiceException("Bad Request, email must be unique", Response.Status.BAD_REQUEST, e);
     	} catch (Exception e) {
     		e.printStackTrace();
     	}
