@@ -48,7 +48,7 @@ public class UserService {
 	 	return crud.findById(id);
 	 }
 	 
-	 User create(User user) throws ConstraintViolationException, ValidationException, Exception {
+	 public User create(User user) throws ConstraintViolationException, ValidationException, Exception {
 	     log.info("ContactService.create() - Creating " + user.getFirstName() + " " + user.getLastName());
 	     
 	     validator.validateUser(user);

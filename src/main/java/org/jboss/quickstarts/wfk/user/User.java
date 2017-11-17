@@ -66,10 +66,7 @@ public class User implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date birthDate;
 	
-	@NotNull
-	private Boolean verified = false;
-	
-	@OneToMany(mappedBy="user")
+	@OneToMany(mappedBy="customer", cascade = CascadeType.ALL)
 	private Set<Booking> bookings;
 	
 	public Long getId() {
@@ -118,14 +115,6 @@ public class User implements Serializable {
 
     public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
-    }
-
-    public Boolean getVerified(){
-    	return verified;
-    }
-    
-    public void setVerified(Boolean verified){
-    	this.verified = verified;
     }
     
     public void setBookings(Set<Booking> bookings){

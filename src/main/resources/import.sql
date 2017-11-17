@@ -21,3 +21,4 @@
 -- NOTE: this file should be removed for production systems. 
 insert into Contact (id, first_name, last_name, email, phone_number, birth_date) values (10001, 'John', 'Smith', 'john.smith@mailinator.com', '(212) 555-1212', '1963-06-03')
 insert into Contact (id, first_name, last_name, email, phone_number, birth_date) values (10002, 'Davey', 'Jones', 'davey.jones@locker.com', '(212) 555-3333', '1996-08-07')
+insert into User (first_name, last_name, email, phone_number, birth_date) values ('string', 'string', 'string@mail.com', '01231231239', '2017-11-16T15:52:43.228Z')

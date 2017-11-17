@@ -2,6 +2,7 @@ package org.jboss.quickstarts.wfk.booking;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,13 +34,13 @@ public class Booking {
 	@GeneratedValue(strategy = GenerationType.TABLE)
 	private Long bookingNumber;
 	
-	//@ManyToOne(targetEntity = User.class)
-	@JoinColumn(name = "customer_id", nullable = false)
-	private Long customerID;
+	@ManyToOne()
+	@JoinColumn(name = "customer")
+	private User customer;
 	
-	//@ManyToOne(targetEntity = Flight.class)
-	@JoinColumn(name = "flight_id", nullable = false)
-	private String flightID;
+	@ManyToOne()
+	@JoinColumn(name = "flight")
+	private Flight flight;
 	
 	@Column(name = "date")
 	private Date time;
@@ -52,20 +53,20 @@ public class Booking {
 		this.bookingNumber = bookingNumber;
 	}
 
-	public long getCustomerID() {
-		return customerID;
+	public User getCustomer() {
+		return customer;
 	}
 
-	public void setCustomerID(long customerID) {
-		this.customerID = customerID;
+	public void setCustomer(User customer) {
+		this.customer = customer;
 	}
 
-	public String getFlightID() {
-		return flightID;
+	public Flight getFlight() {
+		return flight;
 	}
 
-	public void setFlightID(String flightID) {
-		this.flightID = flightID;
+	public void setFlight(Flight flight) {
+		this.flight = flight;
 	}
 
 	public Date getTime() {
@@ -74,6 +75,5 @@ public class Booking {
 
 	public void setTime(Date time) {
 		this.time = time;
-	}
-	
+	}	
 }

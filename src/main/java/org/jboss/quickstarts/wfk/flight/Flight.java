@@ -3,6 +3,7 @@ package org.jboss.quickstarts.wfk.flight;
 import java.io.Serializable;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -52,7 +53,7 @@ public class Flight implements Serializable {
 	@Column(name = "arrival")
 	private String arrival;
 	
-	@OneToMany(mappedBy="Flight")
+	@OneToMany(mappedBy="flight", cascade = CascadeType.ALL)
 	private Set<Booking> bookings;
 	
 	public long getId() {

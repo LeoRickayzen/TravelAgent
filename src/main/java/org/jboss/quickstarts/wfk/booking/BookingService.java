@@ -26,13 +26,13 @@ public class BookingService {
 		return crud.findAllBookings();
 	}
 	
-	void createBooking(Booking booking) throws InvalidCredentialsException{
-		validator.validateBooking(booking);
+	public void createBooking(Booking booking) throws InvalidCredentialsException{
+		//validator.validateBooking(booking);
 		crud.createBooking(booking);
 	}
 	
 	void deleteBooking(Booking booking) throws InvalidCredentialsException{
-		validator.validateBooking(booking);
+		//validator.validateBooking(booking);
 		crud.deleteBooking(booking);
 	}
 }
