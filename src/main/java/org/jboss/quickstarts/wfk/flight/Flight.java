@@ -20,6 +20,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.jboss.quickstarts.wfk.booking.Booking;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @NamedQueries({
 	@NamedQuery(name = Flight.FIND_ALL, query = "SELECT f FROM Flight f ORDER BY f.flightNumber DESC"),
@@ -53,7 +55,8 @@ public class Flight implements Serializable {
 	@Column(name = "arrival")
 	private String arrival;
 	
-	@OneToMany(mappedBy="flight", cascade = CascadeType.ALL)
+	@JsonIgnore
+	@OneToMany(mappedBy="flightBooked", cascade = CascadeType.ALL)
 	private Set<Booking> bookings;
 	
 	public long getId() {

@@ -14,6 +14,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.jboss.quickstarts.wfk.booking.Booking;
 import org.jboss.quickstarts.wfk.contact.Contact;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * <p>code is based on example code given in Contact.java by Joshua Wilson</p>
  * 
@@ -66,6 +68,7 @@ public class User implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date birthDate;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="customer", cascade = CascadeType.ALL)
 	private Set<Booking> bookings;
 	

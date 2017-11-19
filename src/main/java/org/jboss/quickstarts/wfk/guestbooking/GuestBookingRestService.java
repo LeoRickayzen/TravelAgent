@@ -37,12 +37,11 @@ public class GuestBookingRestService {
     
     @POST
     @ApiOperation(value = "Create a guest booking")
-    public Response createBookings(Booking booking){
+    public Response createBookings(GuestBooking booking){
     	try{
         	service.createBooking(booking);
     	}catch(ConstraintViolationException e){
     		Map<String, String> responseObj = new HashMap<>();
-
             for (ConstraintViolation<?> violation : e.getConstraintViolations()) {
                 responseObj.put(violation.getPropertyPath().toString(), violation.getMessage());
             }

@@ -14,10 +14,11 @@ public class BookingValidator {
     @Inject
     private FlightRepository crud;
     
+    @Inject
     private UserRepository ccrud;
 	
     void validateBooking(Booking booking){
-    	flightExists(booking.getFlight().getFlightNumber());
+    	flightExists(booking.getFlightBooked().getFlightNumber());
     	customerExists(booking.getCustomer().getId());
     }
     

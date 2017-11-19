@@ -34,13 +34,13 @@ public class Booking {
 	@GeneratedValue(strategy = GenerationType.TABLE)
 	private Long bookingNumber;
 	
-	@ManyToOne()
+	@ManyToOne
 	@JoinColumn(name = "customer")
 	private User customer;
 	
-	@ManyToOne()
-	@JoinColumn(name = "flight")
-	private Flight flight;
+	@ManyToOne
+	@JoinColumn(name = "flightBooked")
+	private Flight flightBooked;
 	
 	@Column(name = "date")
 	private Date time;
@@ -61,12 +61,12 @@ public class Booking {
 		this.customer = customer;
 	}
 
-	public Flight getFlight() {
-		return flight;
+	public Flight getFlightBooked() {
+		return flightBooked;
 	}
 
-	public void setFlight(Flight flight) {
-		this.flight = flight;
+	public void setFlightBooked(Flight flight) {
+		this.flightBooked = flight;
 	}
 
 	public Date getTime() {

@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
 public class FlightRepository {
@@ -34,7 +35,13 @@ public class FlightRepository {
     public Flight findByNumber(String flightNumber){
     	System.out.println("zzzzz: " + flightNumber);
     	TypedQuery<Flight> query = em.createNamedQuery(Flight.FIND_BY_NUMBER, Flight.class).setParameter("number", flightNumber);
-        return query.getSingleResult();
+    	Flight flight = null;
+    	try{
+        	flight = query.getSingleResult();
+        }catch(NoResultException nre){
+        	
+        }
+    	return flight;
     }
     
     public Flight findFlightById(Long id){
