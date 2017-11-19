@@ -1,4 +1,4 @@
-package org.jboss.quickstarts.wfk.user;
+package org.jboss.quickstarts.wfk.customer;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -25,20 +25,20 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  */
 @Entity
 @NamedQueries({
-        @NamedQuery(name = User.FIND_ALL, query = "SELECT u FROM User u ORDER BY u.lastName ASC, u.firstName ASC"),
-        @NamedQuery(name = User.FIND_BY_EMAIL, query = "SELECT u FROM User u WHERE u.email = :email")
+        @NamedQuery(name = Customer.FIND_ALL, query = "SELECT c FROM Customer c ORDER BY c.lastName ASC, c.firstName ASC"),
+        @NamedQuery(name = Customer.FIND_BY_EMAIL, query = "SELECT c FROM Customer c WHERE c.email = :email")
 })
 @XmlRootElement
-@Table(name = "user", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
-public class User implements Serializable {
+@Table(name = "Customer", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
+public class Customer implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE)
 	private Long id;
 	
-	public static final String FIND_ALL = "User.findAll";
-    public static final String FIND_BY_EMAIL = "User.findByEmail";
+	public static final String FIND_ALL = "Customer.findAll";
+    public static final String FIND_BY_EMAIL = "Customer.findByEmail";
 	
 	@NotNull
 	@Size(min = 1, max = 25)
@@ -131,8 +131,8 @@ public class User implements Serializable {
     @Override
     public boolean equals(Object o) {
     	if (this == o) return true;
-        if (!(o instanceof User)) return false;
-        User user = (User) o;
+        if (!(o instanceof Customer)) return false;
+        Customer user = (Customer) o;
         if (!email.equals(user.email)) return false;
         return true;
     }

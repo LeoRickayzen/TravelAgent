@@ -8,16 +8,16 @@ import org.jboss.quickstarts.wfk.booking.Booking;
 import org.jboss.quickstarts.wfk.booking.BookingService;
 import org.jboss.quickstarts.wfk.booking.BookingValidator;
 import org.jboss.quickstarts.wfk.booking.InvalidCredentialsException;
+import org.jboss.quickstarts.wfk.customer.Customer;
+import org.jboss.quickstarts.wfk.customer.CustomerRestService;
+import org.jboss.quickstarts.wfk.customer.CustomerService;
 import org.jboss.quickstarts.wfk.flight.Flight;
 import org.jboss.quickstarts.wfk.flight.FlightService;
-import org.jboss.quickstarts.wfk.user.User;
-import org.jboss.quickstarts.wfk.user.UserRestService;
-import org.jboss.quickstarts.wfk.user.UserService;
 
 public class GuestBookingService {
 	
 	@Inject
-	UserService userService;
+	CustomerService userService;
 	@Inject
 	BookingService bookingService;
 	@Inject
@@ -25,10 +25,10 @@ public class GuestBookingService {
 	@Inject
 	BookingValidator bookingValidator;
 	@Inject
-	UserRestService userRest;
+	CustomerRestService userRest;
 	
 	void createBooking(GuestBooking booking) throws ConstraintViolationException, ValidationException, Exception{
-		User user = userService.create(booking.getCustomer());
+		Customer user = userService.create(booking.getCustomer());
 		Flight flight = flightService.findById(booking.getBooking().getFlightBooked().getId());
 		booking.getBooking().setCustomer(user);
 		booking.getBooking().setFlightBooked(flight);

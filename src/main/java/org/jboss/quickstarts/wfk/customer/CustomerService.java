@@ -1,4 +1,4 @@
-package org.jboss.quickstarts.wfk.user;
+package org.jboss.quickstarts.wfk.customer;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -13,60 +13,60 @@ import javax.ws.rs.core.Response;
 import org.jboss.quickstarts.wfk.area.Area;
 import org.jboss.quickstarts.wfk.area.AreaService;
 import org.jboss.quickstarts.wfk.area.InvalidAreaCodeException;
-import org.jboss.quickstarts.wfk.user.UserRepository;
-import org.jboss.quickstarts.wfk.user.UserValidator;
+import org.jboss.quickstarts.wfk.customer.CustomerRepository;
+import org.jboss.quickstarts.wfk.customer.CustomerValidator;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
-public class UserService {
+public class CustomerService {
 
 	 @Inject
 	 private @Named("logger") Logger log;
 
 	 @Inject
-	 private UserValidator validator;
+	 private CustomerValidator validator;
 
 	 @Inject
-	 private UserRepository crud;
+	 private CustomerRepository crud;
 
 	 private ResteasyClient client;
 	 
-	 public UserService() {
+	 public CustomerService() {
 	     client = new ResteasyClientBuilder().build();
 	 }
 	 
-	 List<User> findAll(){
+	 List<Customer> findAll(){
 	 	return crud.findAllOrderedByName();
 	 }
 	 
-	 User findByEmail(String email) {
+	 Customer findByEmail(String email) {
 	     return crud.findByEmail(email);
 	 }
 	 
-	 User findById(long id){
+	 Customer findById(long id){
 	 	return crud.findById(id);
 	 }
 	 
-	 public User create(User user) throws ConstraintViolationException, ValidationException, Exception {
-	     log.info("ContactService.create() - Creating " + user.getFirstName() + " " + user.getLastName());
+	 public Customer create(Customer customer) throws ConstraintViolationException, ValidationException, Exception {
+	     log.info("ContactService.create() - Creating " + customer.getFirstName() + " " + customer.getLastName());
 	     
-	     validator.validateUser(user);
+	     validator.validateUser(customer);
 
-	     return crud.create(user);
+	     return crud.create(customer);
 	 }
 	 
-	 User update(User user) throws ConstraintViolationException, ValidationException, Exception {
-	     log.info("ContactService.update() - Updating " + user.getFirstName() + " " + user.getLastName());
+	 Customer update(Customer customer) throws ConstraintViolationException, ValidationException, Exception {
+	     log.info("ContactService.update() - Updating " + customer.getFirstName() + " " + customer.getLastName());
 	     
 	     // Check to make sure the data fits with the parameters in the Contact model and passes validation.
-	     validator.validateUser(user);
+	     validator.validateUser(customer);
 
 	     // Either update the contact or add it if it can't be found.
-	     return crud.update(user);
+	     return crud.update(customer);
 	 }
 	 
-	 void delete(User user) throws Exception{
+	 void delete(Customer user) throws Exception{
 	 	crud.delete(user);
 	 }
 }

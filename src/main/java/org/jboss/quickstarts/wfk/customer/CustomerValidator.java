@@ -1,4 +1,4 @@
-package org.jboss.quickstarts.wfk.user;
+package org.jboss.quickstarts.wfk.customer;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,34 +11,34 @@ import javax.validation.ValidationException;
 import javax.validation.Validator;
 
 import org.jboss.quickstarts.wfk.contact.UniqueEmailException;
-import org.jboss.quickstarts.wfk.user.User;
-import org.jboss.quickstarts.wfk.user.UserRepository;
+import org.jboss.quickstarts.wfk.customer.Customer;
+import org.jboss.quickstarts.wfk.customer.CustomerRepository;
 
-public class UserValidator {
+public class CustomerValidator {
 	
 	@Inject
     private Validator validator;
 
     @Inject
-    private UserRepository crud;
+    private CustomerRepository crud;
 	
-    void validateUser(User user) throws ConstraintViolationException, ValidationException {
+    void validateUser(Customer customer) throws ConstraintViolationException, ValidationException {
         // Create a bean validator and check for issues.
-        Set<ConstraintViolation<User>> violations = validator.validate(user);
+        Set<ConstraintViolation<Customer>> violations = validator.validate(customer);
 
         if (!violations.isEmpty()) {
             throw new ConstraintViolationException(new HashSet<ConstraintViolation<?>>(violations));
         }
 
         // Check the uniqueness of the email address
-        if (emailAlreadyExists(user.getEmail(), user.getId())) {
+        if (emailAlreadyExists(customer.getEmail(), customer.getId())) {
             throw new UniqueEmailException("Unique Email Violation");
         }
     }
     
 	boolean emailAlreadyExists(String email, Long id) {
-        User user = null;
-        User contactWithID = null;
+        Customer user = null;
+        Customer contactWithID = null;
         try {
             user = crud.findByEmail(email);
         } catch (NoResultException e) {

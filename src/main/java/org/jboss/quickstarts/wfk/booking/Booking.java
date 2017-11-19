@@ -16,8 +16,8 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.jboss.quickstarts.wfk.customer.Customer;
 import org.jboss.quickstarts.wfk.flight.Flight;
-import org.jboss.quickstarts.wfk.user.User;
 
 @Entity
 @NamedQueries({
@@ -36,7 +36,7 @@ public class Booking {
 	
 	@ManyToOne
 	@JoinColumn(name = "customer")
-	private User customer;
+	private Customer customer;
 	
 	@ManyToOne
 	@JoinColumn(name = "flightBooked")
@@ -53,11 +53,11 @@ public class Booking {
 		this.bookingNumber = bookingNumber;
 	}
 
-	public User getCustomer() {
+	public Customer getCustomer() {
 		return customer;
 	}
 
-	public void setCustomer(User customer) {
+	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
 

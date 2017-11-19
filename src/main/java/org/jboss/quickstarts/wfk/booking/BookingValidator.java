@@ -3,8 +3,8 @@ package org.jboss.quickstarts.wfk.booking;
 import javax.inject.Inject;
 import javax.validation.Validator;
 
+import org.jboss.quickstarts.wfk.customer.CustomerRepository;
 import org.jboss.quickstarts.wfk.flight.FlightRepository;
-import org.jboss.quickstarts.wfk.user.UserRepository;
 
 public class BookingValidator {
 	
@@ -15,7 +15,7 @@ public class BookingValidator {
     private FlightRepository crud;
     
     @Inject
-    private UserRepository ccrud;
+    private CustomerRepository ccrud;
 	
     void validateBooking(Booking booking){
     	flightExists(booking.getFlightBooked().getFlightNumber());

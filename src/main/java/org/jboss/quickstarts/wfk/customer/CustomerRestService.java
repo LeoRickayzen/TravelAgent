@@ -1,4 +1,4 @@
-package org.jboss.quickstarts.wfk.user;
+package org.jboss.quickstarts.wfk.customer;
 
 import java.util.HashMap;
 import java.util.List;
@@ -31,39 +31,39 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
-@Path("/users")
+@Path("/customers")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/users", description = "Operations about users")
+@Api(value = "/customers", description = "Operations about customers")
 @Stateless
-public class UserRestService {
+public class CustomerRestService {
 	@Inject
     private @Named("logger") Logger log;
     
     @Inject
-    private UserService service;
+    private CustomerService service;
     
     @GET
-    @ApiOperation(value = "Fetch all users", notes = "Returns a JSON array of all stored user objects.")
-    public Response getAllUsers(){
-    	List<User> users;
-    	users = service.findAll();
-    	users.retainAll(service.findAll());
-		return Response.ok(users).build();
+    @ApiOperation(value = "Fetch all customers", notes = "Returns a JSON array of all stored user objects.")
+    public Response getAllCustomers(){
+    	List<Customer> customers;
+    	customers = service.findAll();
+    	customers.retainAll(service.findAll());
+		return Response.ok(customers).build();
     }
     
     @SuppressWarnings("unused")
     @POST
     @ApiOperation(value = "Add a new User to the database")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "User created successfully."),
-            @ApiResponse(code = 400, message = "Invalid User supplied in request body"),
-            @ApiResponse(code = 409, message = "User supplied in request body conflicts with an existing user"),
+            @ApiResponse(code = 201, message = "Customer created successfully."),
+            @ApiResponse(code = 400, message = "Invalid Customer supplied in request body"),
+            @ApiResponse(code = 409, message = "Customer supplied in request body conflicts with an existing user"),
             @ApiResponse(code = 500, message = "An unexpected error occurred whilst processing the request")
     })
-    public Response createUser(User user){
+    public Response createCustomer(Customer customer){
     	
-    	if (user == null) {
+    	if (customer == null) {
             throw new RestServiceException("Bad Request", Response.Status.BAD_REQUEST);
         }
     	
@@ -71,9 +71,9 @@ public class UserRestService {
     	
     	try {
 			
-    		service.create(user);
+    		service.create(customer);
 
-            builder = Response.status(Response.Status.CREATED).entity(user);
+            builder = Response.status(Response.Status.CREATED).entity(customer);
 		
     	} catch (ConstraintViolationException ce) {
     		//bean validation issue
@@ -96,13 +96,13 @@ public class UserRestService {
     }
     
     @DELETE
-    @ApiOperation(value = "delete a user from the database")
+    @ApiOperation(value = "delete a customer from the database")
     @Path("/{id}")
-    public Response deleteUser(
+    public Response deleteCustomer(
     		@ApiParam(value = "Id of user to be deleted", allowableValues = "range[0, infinity]", required = true)
     		@PathParam("id") 
     		long id){
-    	User user = service.findById(id);
+    	Customer user = service.findById(id);
     	try {
 			service.delete(user);
 			return Response.ok(user).build();
@@ -118,9 +118,9 @@ public class UserRestService {
             @ApiResponse(code = 204, message = "No user with that ID")
     })
     @Path("/{id}")
-    public Response findUser(@ApiParam(value = "Id of user to be fetched", allowableValues = "range[0, infinity]", required = true)
+    public Response findCustomer(@ApiParam(value = "Id of user to be fetched", allowableValues = "range[0, infinity]", required = true)
     		@PathParam("id") long id){
-    	User user = service.findById(id);
+    	Customer user = service.findById(id);
     	if(user == null){
     		return Response.noContent().build();
     	}else{

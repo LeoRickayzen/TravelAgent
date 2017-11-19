@@ -14,8 +14,8 @@ import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
 import org.jboss.quickstarts.wfk.contact.ContactRestService;
-import org.jboss.quickstarts.wfk.user.User;
-import org.jboss.quickstarts.wfk.user.UserRestService;
+import org.jboss.quickstarts.wfk.customer.Customer;
+import org.jboss.quickstarts.wfk.customer.CustomerRestService;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -49,7 +49,7 @@ public class UserTest {
     }
 	
 	@Inject
-    UserRestService userRestService;
+    CustomerRestService userRestService;
 
     @Inject
     @Named("logger") Logger log;
@@ -60,15 +60,15 @@ public class UserTest {
     @Test
     @InSequence(1)
     public void testRegistration(){
-    	User user = createUser("leo", "r", "lr1@ncl.ac.uk", "07859237477", new Date(1995, 06, 28));
-    	Response response = userRestService.createUser(user);
+    	Customer user = createUser("leo", "r", "lr1@ncl.ac.uk", "07859237477", new Date(1995, 06, 28));
+    	Response response = userRestService.createCustomer(user);
     	
     	assertEquals(201, response.getStatus());
         log.info(" New contact was persisted and returned status " + response.getStatus());
     }
     
-    public User createUser(String firstname, String lastname, String email, String phonenumber, Date birthDate){
-    	User user = new User();
+    public Customer createUser(String firstname, String lastname, String email, String phonenumber, Date birthDate){
+    	Customer user = new Customer();
     	user.setFirstName(firstname);
     	user.setLastName(lastname);
     	user.setEmail(email);
