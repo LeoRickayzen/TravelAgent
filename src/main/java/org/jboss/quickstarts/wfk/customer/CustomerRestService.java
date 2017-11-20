@@ -69,8 +69,6 @@ public class CustomerRestService {
             throw new RestServiceException("Bad Request", Response.Status.BAD_REQUEST);
         }
     	
-    	Response.ResponseBuilder builder;
-    	
     	try {
 			
     		Customer createdCustomer = service.create(customer);
