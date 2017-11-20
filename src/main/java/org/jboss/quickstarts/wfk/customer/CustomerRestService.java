@@ -21,6 +21,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import org.jboss.quickstarts.wfk.contact.UniqueEmailException;
 import org.jboss.quickstarts.wfk.util.RestServiceException;
@@ -57,6 +58,7 @@ public class CustomerRestService {
     @ApiOperation(value = "Add a new User to the database")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Customer created successfully."),
+            @ApiResponse(code = 204, message = "Customer id provided when it should be automatically generated"),
             @ApiResponse(code = 400, message = "Invalid Customer supplied in request body"),
             @ApiResponse(code = 409, message = "Customer supplied in request body conflicts with an existing user"),
             @ApiResponse(code = 500, message = "An unexpected error occurred whilst processing the request")
@@ -71,9 +73,9 @@ public class CustomerRestService {
     	
     	try {
 			
-    		service.create(customer);
+    		Customer createdCustomer = service.create(customer);
 
-            builder = Response.status(Response.Status.CREATED).entity(customer);
+            return Response.status(Status.CREATED).entity(createdCustomer).build();
 		
     	} catch (ConstraintViolationException ce) {
     		//bean validation issue
@@ -87,7 +89,7 @@ public class CustomerRestService {
 		
     	} catch (UniqueEmailException e) {
     		e.printStackTrace();
-    		throw new RestServiceException("Bad Request, email must be unique", Response.Status.BAD_REQUEST, e);
+    		throw new RestServiceException("Bad Request, email must be unique", Response.Status.CONFLICT, e);
     	} catch (Exception e) {
     		e.printStackTrace();
     	}
@@ -97,17 +99,27 @@ public class CustomerRestService {
     
     @DELETE
     @ApiOperation(value = "delete a customer from the database")
+    @ApiResponses(value = {
+            @ApiResponse(code = 204, message = "Customer deleted successfully"),
+            @ApiResponse(code = 400, message = "Invalid Contact id supplied"),
+            @ApiResponse(code = 404, message = "Contact with id not found"),
+            @ApiResponse(code = 500, message = "An unexpected error occurred whilst processing the request")
+    })
     @Path("/{id}")
     public Response deleteCustomer(
     		@ApiParam(value = "Id of user to be deleted", allowableValues = "range[0, infinity]", required = true)
     		@PathParam("id") 
     		long id){
     	Customer user = service.findById(id);
-    	try {
-			service.delete(user);
-			return Response.ok(user).build();
-		} catch (Exception e) {
-			return Response.notModified("no user with that id").build();
+    	if(user == null){
+    		throw new RestServiceException("No Contact with the id " + id + " was found!", Response.Status.NOT_FOUND);
+		}else{
+			try {
+				service.delete(user);
+				return Response.noContent().build();
+			} catch (Exception e) {
+				throw new RestServiceException(e);
+			}
 		}
     }
     

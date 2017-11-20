@@ -6,7 +6,10 @@ import java.util.logging.Logger;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
+
+import org.jboss.quickstarts.wfk.flight.Flight;
 
 public class BookingRepository {
 	
@@ -27,7 +30,19 @@ public class BookingRepository {
     }
     
     Booking deleteBooking(Booking booking){
-    	em.remove(booking);
+    	Booking b = em.merge(booking);
+    	em.remove(b);
+    	return booking;
+    }
+    
+    Booking findByNumber(Long bookingNumber){
+    	TypedQuery<Booking> query = em.createNamedQuery(Booking.FIND_BY_NUMBER, Booking.class).setParameter("number", bookingNumber);
+    	Booking booking = null;
+    	try{
+        	booking = query.getSingleResult();
+        }catch(NoResultException nre){
+        	return null;
+        }
     	return booking;
     }
 }

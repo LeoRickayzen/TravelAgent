@@ -34,8 +34,19 @@ public class FlightService {
 		return crud.findAllOrderedByNumber();
 	}
 
-	public Flight deleteBooking(Flight flight) {
-		return crud.deleteFlight(flight);
+	public Flight deleteFlight(Flight flight) {
+		
+		log.info("delete() - Deleting " + flight.toString());
+		
+		Flight deletedFlight = null;
+		
+		if(flight.getId() != null){
+			deletedFlight = crud.deleteFlight(flight);
+		}else{
+			log.info("delete() - No ID was found so can't Delete.");
+		}
+		
+		return deletedFlight;
 	}
 	
 	public Flight findById(long id){

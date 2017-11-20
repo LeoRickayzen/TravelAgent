@@ -13,6 +13,7 @@ import javax.ws.rs.core.Response;
 import org.jboss.quickstarts.wfk.area.Area;
 import org.jboss.quickstarts.wfk.area.AreaService;
 import org.jboss.quickstarts.wfk.area.InvalidAreaCodeException;
+import org.jboss.quickstarts.wfk.contact.Contact;
 import org.jboss.quickstarts.wfk.customer.CustomerRepository;
 import org.jboss.quickstarts.wfk.customer.CustomerValidator;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
@@ -66,7 +67,17 @@ public class CustomerService {
 	     return crud.update(customer);
 	 }
 	 
-	 void delete(Customer user) throws Exception{
-	 	crud.delete(user);
+	 Customer delete(Customer customer) throws Exception{
+		 log.info("delete() - Deleting " + customer.toString());
+
+	     Customer deletedCustomer = null;
+
+	     if (customer.getId() != null) {
+	         deletedCustomer = crud.delete(customer);
+	     } else {
+	         log.info("delete() - No ID was found so can't Delete.");
+	     }
+
+	     return deletedCustomer;
 	 }
 }

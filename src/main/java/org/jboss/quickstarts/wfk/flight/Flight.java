@@ -38,7 +38,7 @@ public class Flight implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE)
-	private long id;
+	private Long id;
 	
 	@NotNull
 	@Pattern(regexp = "^([a-z]|\\d){5}$")
@@ -59,11 +59,11 @@ public class Flight implements Serializable {
 	@OneToMany(mappedBy="flightBooked", cascade = CascadeType.ALL)
 	private Set<Booking> bookings;
 	
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

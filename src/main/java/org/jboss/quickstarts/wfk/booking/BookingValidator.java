@@ -17,19 +17,19 @@ public class BookingValidator {
     @Inject
     private CustomerRepository ccrud;
 	
-    void validateBooking(Booking booking){
-    	flightExists(booking.getFlightBooked().getFlightNumber());
+    void validateBooking(Booking booking) throws InvalidCredentialsException{
+    	flightExists(booking.getFlightBooked().getId());
     	customerExists(booking.getCustomer().getId());
     }
     
-	void flightExists(String flightNumber) throws InvalidCredentialsException{
-		if(crud.findByNumber(flightNumber) == null){
+	void flightExists(Long id) throws InvalidCredentialsException{
+		if(crud.findFlightById(id) == null){
 			throw new InvalidCredentialsException("invalid flight number");
 		}
 	}
 	
 	public void customerExists(Long customerID) throws InvalidCredentialsException{
-		if(!(ccrud.findById(customerID) == null)){
+		if(ccrud.findById(customerID) == null){
 			throw new InvalidCredentialsException("invalid customer id");
 		}
 	}

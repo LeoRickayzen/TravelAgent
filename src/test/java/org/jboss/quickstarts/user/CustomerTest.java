@@ -27,7 +27,7 @@ import org.junit.runner.RunWith;
 import junit.framework.Assert;
 
 @RunWith(Arquillian.class)
-public class UserTest {
+public class CustomerTest {
 	
 	@Deployment
     public static Archive<?> createTestArchive() {
