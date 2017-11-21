@@ -25,7 +25,7 @@ public class FlightService {
 		client = new ResteasyClientBuilder().build();
 	}
 	
-	Flight createFlight(Flight flight) throws InvalidRouteException, FlightNumberExistsException{	
+	public Flight createFlight(Flight flight) throws InvalidRouteException, FlightNumberExistsException{	
 		validator.validateFlight(flight);	
 		return crud.createFlight(flight);
 	}

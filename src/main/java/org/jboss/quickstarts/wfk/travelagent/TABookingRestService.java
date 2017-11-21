@@ -15,6 +15,8 @@ import javax.ws.rs.core.Response.Status;
 
 import org.jboss.quickstarts.wfk.booking.Booking;
 import org.jboss.quickstarts.wfk.booking.InvalidCredentialsException;
+import org.jboss.quickstarts.wfk.flight.FlightService;
+import org.jboss.quickstarts.wfk.hotel.HotelBooking;
 import org.jboss.quickstarts.wfk.taxi.TaxiBooking;
 import org.jboss.quickstarts.wfk.util.RestServiceException;
 
@@ -37,6 +39,8 @@ public class TABookingRestService {
 	public Response createTABooking(TABooking booking){
 		try{
 			TaxiBooking taxiBooking = service.makeTaxiBooking(booking);
+			HotelBooking hotelBooking = service.makeHotelBooking(booking);
+			Booking flightBooking = service.makeFlightBooking(booking);
 			return Response.status(Status.CREATED).entity(taxiBooking).build();
 		}catch(InvalidCredentialsException e){
 			throw new RestServiceException("bad request: " + e.getMessage(), Response.Status.BAD_REQUEST, e);
