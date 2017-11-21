@@ -19,25 +19,25 @@ public class BookingRepository {
     @Inject
     private EntityManager em;
     
-    List<Booking> findAllBookings(){
-    	TypedQuery<Booking> query = em.createNamedQuery(Booking.FIND_ALL, Booking.class);
+    List<FlightBooking> findAllBookings(){
+    	TypedQuery<FlightBooking> query = em.createNamedQuery(FlightBooking.FIND_ALL, FlightBooking.class);
     	return query.getResultList();
     }
     
-    Booking createBooking(Booking booking){
+    FlightBooking createBooking(FlightBooking booking){
     	em.persist(booking);
     	return booking;
     }
     
-    Booking deleteBooking(Booking booking){
-    	Booking b = em.merge(booking);
+    FlightBooking deleteBooking(FlightBooking booking){
+    	FlightBooking b = em.merge(booking);
     	em.remove(b);
     	return booking;
     }
     
-    Booking findByNumber(Long bookingNumber){
-    	TypedQuery<Booking> query = em.createNamedQuery(Booking.FIND_BY_NUMBER, Booking.class).setParameter("number", bookingNumber);
-    	Booking booking = null;
+    FlightBooking findByNumber(Long bookingNumber){
+    	TypedQuery<FlightBooking> query = em.createNamedQuery(FlightBooking.FIND_BY_NUMBER, FlightBooking.class).setParameter("number", bookingNumber);
+    	FlightBooking booking = null;
     	try{
         	booking = query.getSingleResult();
         }catch(NoResultException nre){

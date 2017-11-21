@@ -23,20 +23,20 @@ public class BookingService {
 
 	private ResteasyClient client;
 	
-	List<Booking> findAll(){
+	List<FlightBooking> findAll(){
 		return crud.findAllBookings();
 	}
 	
-	public void createBooking(Booking booking) throws InvalidCredentialsException{
+	public void createBooking(FlightBooking booking) throws InvalidCredentialsException{
 		validator.validateBooking(booking);
 		crud.createBooking(booking);
 	}
 	
-	public Booking deleteBooking(Booking booking) {
+	public FlightBooking deleteBooking(FlightBooking booking) {
 		
 		log.info("delete() - Deleting " + booking.toString());
 		
-		Booking deletedBooking = null;
+		FlightBooking deletedBooking = null;
 		
 		if(booking.getBookingNumber() != null){
 			deletedBooking = crud.deleteBooking(booking);
@@ -47,7 +47,7 @@ public class BookingService {
 		return deletedBooking;
 	}
 	
-	public Booking findById(long id){
+	public FlightBooking findById(long id){
 		return crud.findByNumber(id);
 	}
 }

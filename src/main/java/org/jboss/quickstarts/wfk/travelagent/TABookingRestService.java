@@ -6,6 +6,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -13,7 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.jboss.quickstarts.wfk.booking.Booking;
+import org.jboss.quickstarts.wfk.booking.FlightBooking;
 import org.jboss.quickstarts.wfk.booking.InvalidCredentialsException;
 import org.jboss.quickstarts.wfk.flight.FlightService;
 import org.jboss.quickstarts.wfk.hotel.HotelBooking;
@@ -40,7 +41,7 @@ public class TABookingRestService {
 		
 		TaxiBooking taxiBooking = null;
 		HotelBooking hotelBooking = null;
-		Booking flightBooking = null;
+		FlightBooking flightBooking = null;
 		
 		try{
 			taxiBooking = service.makeTaxiBooking(booking);
@@ -77,5 +78,18 @@ public class TABookingRestService {
 			}
 		}
 		return Response.status(Status.CREATED).entity(booking).build();
+	}
+
+	@DELETE
+	public Response deleteTABooking(TABooking booking){
+		
+		if(service.getFlightBooking(booking) != null){
+			service.rollBackFlight(booking.getFlightId());
+			service.rollBackHotel(booking.getHotelId());
+			service.rollBackTaxi(booking.getTaxiId());	
+			return Response.noContent().entity(booking).build();
+		}else{
+			throw new RestServiceException("No booking with id " + booking.getId() + " found", Response.Status.NOT_FOUND);
+		}
 	}
 }

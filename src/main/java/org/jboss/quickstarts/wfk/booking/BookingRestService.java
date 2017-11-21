@@ -45,7 +45,7 @@ public class BookingRestService {
     @GET
     @ApiOperation(value = "Fetch all bookings", notes = "Returns a JSON array of all stored booking objects.")
     public Response getBookings(){
-    	List<Booking> bookings = service.findAll();
+    	List<FlightBooking> bookings = service.findAll();
     	bookings.retainAll(service.findAll());
     	return Response.ok(bookings).build();
     }
@@ -58,7 +58,7 @@ public class BookingRestService {
             @ApiResponse(code = 400, message = "Invalid Booking supplied in request body"),
             @ApiResponse(code = 500, message = "An unexpected error occurred whilst processing the request")
     })
-    public Response createBookings(Booking booking){
+    public Response createBookings(FlightBooking booking){
     	try{
         	service.createBooking(booking);
     	}catch(InvalidCredentialsException e){
@@ -84,8 +84,8 @@ public class BookingRestService {
             @ApiResponse(code = 404, message = "Booking with id not found"),
             @ApiResponse(code = 500, message = "An unexpected error occurred whilst processing the request")
     })
-    public Response deleteBooking(Booking booking){
-    	Booking b = service.findById(booking.getBookingNumber());
+    public Response deleteBooking(FlightBooking booking){
+    	FlightBooking b = service.findById(booking.getBookingNumber());
     	if(b == null){
     		throw new RestServiceException("No booking with the id " + booking.getBookingNumber() + " was found!", Response.Status.NOT_FOUND);
 		}else{

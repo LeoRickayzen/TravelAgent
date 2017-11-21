@@ -18,7 +18,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.jboss.quickstarts.wfk.booking.Booking;
+import org.jboss.quickstarts.wfk.booking.FlightBooking;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -57,7 +57,7 @@ public class Flight implements Serializable {
 	
 	@JsonIgnore
 	@OneToMany(mappedBy="flightBooked", cascade = CascadeType.ALL)
-	private Set<Booking> bookings;
+	private Set<FlightBooking> bookings;
 	
 	public Long getId() {
 		return id;
@@ -91,11 +91,11 @@ public class Flight implements Serializable {
 		this.arrival = arrival;
 	}
 	
-	public void setBookings(Set<Booking> bookings){
+	public void setBookings(Set<FlightBooking> bookings){
     	this.bookings = bookings;
     }
     
-    public Set<Booking> getBookings(){
+    public Set<FlightBooking> getBookings(){
     	return bookings;
     }
 }

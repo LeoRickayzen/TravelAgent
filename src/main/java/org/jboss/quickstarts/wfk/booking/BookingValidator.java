@@ -17,7 +17,7 @@ public class BookingValidator {
     @Inject
     private CustomerRepository ccrud;
 	
-    void validateBooking(Booking booking) throws InvalidCredentialsException{
+    void validateBooking(FlightBooking booking) throws InvalidCredentialsException{
     	flightExists(booking.getFlightBooked().getId());
     	customerExists(booking.getCustomer().getId());
     }

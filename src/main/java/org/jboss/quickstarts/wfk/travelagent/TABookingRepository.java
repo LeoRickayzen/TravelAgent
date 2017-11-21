@@ -8,7 +8,7 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
-import org.jboss.quickstarts.wfk.booking.Booking;
+import org.jboss.quickstarts.wfk.booking.FlightBooking;
 
 public class TABookingRepository {
 
@@ -17,6 +17,11 @@ public class TABookingRepository {
 
     @Inject
     private EntityManager em;
+    
+    TABooking findById(Long id){
+    	TypedQuery<TABooking> query = em.createNamedQuery(TABooking.FIND_BY_NUMBER, TABooking.class).setParameter(0, "number");
+    	return query.getSingleResult();
+    }
     
     List<TABooking> findAllBookings(){
     	TypedQuery<TABooking> query = em.createNamedQuery(TABooking.FIND_ALL, TABooking.class);

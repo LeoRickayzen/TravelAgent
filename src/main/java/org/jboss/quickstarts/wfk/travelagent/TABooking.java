@@ -16,7 +16,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.jboss.quickstarts.wfk.booking.Booking;
+import org.jboss.quickstarts.wfk.booking.FlightBooking;
 import org.jboss.quickstarts.wfk.customer.Customer;
 
 @Entity

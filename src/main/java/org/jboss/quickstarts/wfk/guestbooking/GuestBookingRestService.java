@@ -16,7 +16,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.jboss.quickstarts.wfk.booking.Booking;
+import org.jboss.quickstarts.wfk.booking.FlightBooking;
 import org.jboss.quickstarts.wfk.booking.BookingService;
 import org.jboss.quickstarts.wfk.util.RestServiceException;
 

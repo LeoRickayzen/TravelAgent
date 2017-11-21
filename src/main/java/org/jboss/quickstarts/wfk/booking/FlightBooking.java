@@ -21,12 +21,12 @@ import org.jboss.quickstarts.wfk.flight.Flight;
 
 @Entity
 @NamedQueries({
-	@NamedQuery(name = Booking.FIND_ALL, query = "SELECT b FROM Booking b ORDER BY b.bookingNumber DESC"),
-	@NamedQuery(name = Booking.FIND_BY_NUMBER, query = "SELECT b FROM Booking b WHERE b.bookingNumber = :number")
+	@NamedQuery(name = FlightBooking.FIND_ALL, query = "SELECT b FROM Booking b ORDER BY b.bookingNumber DESC"),
+	@NamedQuery(name = FlightBooking.FIND_BY_NUMBER, query = "SELECT b FROM Booking b WHERE b.bookingNumber = :number")
 })
 @XmlRootElement
 @Table(name="booking", uniqueConstraints = @UniqueConstraint(columnNames = "bookingNumber"))
-public class Booking {
+public class FlightBooking {
 	
 	public static final String FIND_ALL = "Booking.findAll";
 	public static final String FIND_BY_NUMBER = "Booking.findByNumber";

@@ -8,9 +8,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+
 @Path("/bookings")
 @Consumes(MediaType.APPLICATION_JSON)
-public interface TaxiBookingService {
+public interface TaxiBookingService{
 	
 	@POST
 	Response makeBooking(TaxiBooking booking);

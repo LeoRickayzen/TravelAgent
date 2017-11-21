@@ -5,7 +5,7 @@ import java.util.Date;
 
 import org.jboss.quickstarts.wfk.taxi.TaxiBooking;
 
-public class HotelBooking implements Serializable {
+public class HotelBooking implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	

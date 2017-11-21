@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.jboss.quickstarts.wfk.booking.Booking;
+import org.jboss.quickstarts.wfk.booking.FlightBooking;
 import org.jboss.quickstarts.wfk.contact.Contact;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -70,7 +70,7 @@ public class Customer implements Serializable {
 	
 	@JsonIgnore
 	@OneToMany(mappedBy="customer", cascade = CascadeType.ALL)
-	private Set<Booking> bookings;
+	private Set<FlightBooking> bookings;
 	
 	public Long getId() {
         return id;
@@ -120,11 +120,11 @@ public class Customer implements Serializable {
         this.birthDate = birthDate;
     }
     
-    public void setBookings(Set<Booking> bookings){
+    public void setBookings(Set<FlightBooking> bookings){
     	this.bookings = bookings;
     }
     
-    public Set<Booking> getBookings(){
+    public Set<FlightBooking> getBookings(){
     	return bookings;
     }
     

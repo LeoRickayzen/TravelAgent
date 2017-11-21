@@ -2,7 +2,7 @@ package org.jboss.quickstarts.wfk.guestbooking;
 
 import java.io.Serializable;
 
-import org.jboss.quickstarts.wfk.booking.Booking;
+import org.jboss.quickstarts.wfk.booking.FlightBooking;
 import org.jboss.quickstarts.wfk.customer.Customer;
 
 public class GuestBooking implements Serializable {
@@ -11,7 +11,7 @@ public class GuestBooking implements Serializable {
 
 	private Customer customer;
 	
-	private Booking booking;
+	private FlightBooking booking;
 	
 	public Customer getCustomer(){
 		return customer;
@@ -21,11 +21,11 @@ public class GuestBooking implements Serializable {
 		this.customer = customer;
 	}
 	
-	public Booking getBooking(){
+	public FlightBooking getBooking(){
 		return booking;
 	}
 	
-	public void setBooking(Booking booking){
+	public void setBooking(FlightBooking booking){
 		this.booking = booking;
 	}
 }

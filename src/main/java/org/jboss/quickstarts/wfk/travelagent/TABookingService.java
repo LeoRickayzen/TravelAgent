@@ -9,7 +9,7 @@ import javax.inject.Named;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.core.Response;
 
-import org.jboss.quickstarts.wfk.booking.Booking;
+import org.jboss.quickstarts.wfk.booking.FlightBooking;
 import org.jboss.quickstarts.wfk.booking.BookingService;
 import org.jboss.quickstarts.wfk.booking.InvalidCredentialsException;
 import org.jboss.quickstarts.wfk.customer.Customer;
@@ -128,8 +128,8 @@ public class TABookingService {
 		}
 	}
 
-	public Booking makeFlightBooking(TABooking booking){
-		Booking flightBooking = new Booking();
+	public FlightBooking makeFlightBooking(TABooking booking){
+		FlightBooking flightBooking = new FlightBooking();
 		
 		Customer customer = new Customer();
 		customer.setId(agentIdFlight);
@@ -145,6 +145,10 @@ public class TABookingService {
 		return flightBooking;
 	}
 	
+	public TABooking getFlightBooking(TABooking tab){
+		return crud.findById(tab.getId());
+	}
+	
 	public TABooking storeTABooking(TABooking booking){
 		return crud.createBooking(booking);
 	}
@@ -158,6 +162,8 @@ public class TABookingService {
 	}
 	
 	public void rollBackFlight(Long id){
-		
+		FlightBooking booking = new FlightBooking();
+		booking.setBookingNumber(id);
+		flightBookingService.deleteBooking(booking);
 	}
 }

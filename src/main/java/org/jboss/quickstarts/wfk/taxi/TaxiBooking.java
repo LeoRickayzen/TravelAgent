@@ -8,7 +8,7 @@ import javax.persistence.TemporalType;
 
 import org.jboss.quickstarts.wfk.area.Area;
 
-public class TaxiBooking implements Serializable {
+public class TaxiBooking implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 

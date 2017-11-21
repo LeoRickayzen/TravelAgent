@@ -4,7 +4,7 @@ import javax.inject.Inject;
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 
-import org.jboss.quickstarts.wfk.booking.Booking;
+import org.jboss.quickstarts.wfk.booking.FlightBooking;
 import org.jboss.quickstarts.wfk.booking.BookingService;
 import org.jboss.quickstarts.wfk.booking.BookingValidator;
 import org.jboss.quickstarts.wfk.booking.InvalidCredentialsException;
