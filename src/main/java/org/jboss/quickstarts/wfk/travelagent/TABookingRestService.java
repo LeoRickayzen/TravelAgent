@@ -37,13 +37,45 @@ public class TABookingRestService {
 	
 	@POST
 	public Response createTABooking(TABooking booking){
+		
+		TaxiBooking taxiBooking = null;
+		HotelBooking hotelBooking = null;
+		Booking flightBooking = null;
+		
 		try{
-			TaxiBooking taxiBooking = service.makeTaxiBooking(booking);
-			HotelBooking hotelBooking = service.makeHotelBooking(booking);
-			Booking flightBooking = service.makeFlightBooking(booking);
-			return Response.status(Status.CREATED).entity(taxiBooking).build();
+			taxiBooking = service.makeTaxiBooking(booking);
+			log.info("taxi booking created: " + taxiBooking.toString());
 		}catch(InvalidCredentialsException e){
 			throw new RestServiceException("bad request: " + e.getMessage(), Response.Status.BAD_REQUEST, e);
+		}catch(Exception e){
+			throw new RestServiceException(e);
 		}
+		
+		try{
+			hotelBooking = service.makeHotelBooking(booking);
+			log.info("hotel booking created: " + hotelBooking.toString());
+		}catch(InvalidCredentialsException e){
+			if(taxiBooking != null && taxiBooking.getId() != null){
+				service.rollBackTaxi(taxiBooking.getId());
+				throw new RestServiceException("bad request: " + e.getMessage(), Response.Status.BAD_REQUEST, e);
+			}else{
+				throw new RestServiceException("bad request: " + e.getMessage() + ". And no id received", Response.Status.BAD_REQUEST, e);
+			}
+		}catch(Exception e){
+			throw new RestServiceException(e);
+		}
+		
+		try{
+			flightBooking = service.makeFlightBooking(booking);
+		}catch(InvalidCredentialsException e){
+			if(taxiBooking != null && taxiBooking.getId() != null && hotelBooking != null && hotelBooking.getId() != null){
+				service.rollBackHotel(hotelBooking.getId());
+				service.rollBackTaxi(taxiBooking.getId());
+				throw new RestServiceException("bad request: " + e.getMessage(), Response.Status.BAD_REQUEST, e);
+			}else{
+				throw new RestServiceException("bad request: " + e.getMessage() + ". And no id received", Response.Status.BAD_REQUEST, e);
+			}
+		}
+		return Response.status(Status.CREATED).entity(booking).build();
 	}
 }

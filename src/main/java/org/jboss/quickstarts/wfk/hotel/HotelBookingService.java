@@ -14,5 +14,6 @@ public interface HotelBookingService {
 	Response makeBooking(HotelBooking booking);
 	
 	@DELETE
-	Response deleteBooking(HotelBooking booking);
+	@Path("/{id:[0-9]+}")
+	Response deleteBooking(Long id);
 }

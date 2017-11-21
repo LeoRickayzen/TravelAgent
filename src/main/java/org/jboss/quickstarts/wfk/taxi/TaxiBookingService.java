@@ -16,5 +16,6 @@ public interface TaxiBookingService {
 	Response makeBooking(TaxiBooking booking);
 	
 	@DELETE
-	TaxiBooking deleteBooking(TaxiBooking booking);
+	@Path("/{id:[0-9]+}")
+	TaxiBooking deleteBooking(Long id);
 }

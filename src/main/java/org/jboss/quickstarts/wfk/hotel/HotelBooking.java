@@ -3,6 +3,8 @@ package org.jboss.quickstarts.wfk.hotel;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.jboss.quickstarts.wfk.taxi.TaxiBooking;
+
 public class HotelBooking implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -46,4 +48,14 @@ public class HotelBooking implements Serializable {
 	public void setDate(Date date) {
 		this.date = date;
 	}
+	
+	@Override
+    public String toString() {
+        return "HotelBooking{" +
+                "id=" + id +
+                ", customerID='" + customerId + '\'' +
+                ", hotelID='" + hotelId + '\'' +
+                ", date='" + date.toString() + '\'' +
+                '}';
+    }
 }

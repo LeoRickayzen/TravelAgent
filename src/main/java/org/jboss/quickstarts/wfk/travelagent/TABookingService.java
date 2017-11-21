@@ -30,20 +30,17 @@ public class TABookingService {
 	
 	private ResteasyClient client;
 	
-	private final Long agentIdTaxi = new Long("3");
-	private final Long agentIdBooking = new Long("10001");
-	private final Long agentIdFlight = new Long("1");
+	private final Long agentIdTaxi = new Long("10001");
+	private final Long agentIdHotel = new Long("10001");
+	private final Long agentIdFlight = new Long("2");
 	
 	@Inject
     private @Named("logger") Logger log;
 	
 	@Inject
 	private BookingService flightBookingService;
-	
-	public TABookingService(){
-	}
-	
-	public HotelBooking makeHotelBooking(TABooking booking){
+		
+	public HotelBooking makeHotelBooking(TABooking booking) throws Exception{
 		
 		client = new ResteasyClientBuilder().build();
 		
@@ -51,8 +48,8 @@ public class TABookingService {
 		
 		HotelBooking hotelBooking = new HotelBooking();
 		
-		hotelBooking.setId(hotelId);
-		hotelBooking.setCustomerId(agentIdBooking);;
+		hotelBooking.setHotelId(hotelId);
+		hotelBooking.setCustomerId(agentIdHotel);;
 		hotelBooking.setDate(booking.getTime());
 		log.info("booking: " + hotelBooking.toString());
 		
@@ -73,7 +70,11 @@ public class TABookingService {
 				throw new InvalidCredentialsException("duplicate hotel booking provided");
 			}
 			
-			HotelBooking returnedBooking = (HotelBooking)response.getEntity();
+			if(response.getStatus() != 201){
+				throw new Exception("Unkown response code: " + response.getStatus());
+			}
+			
+			HotelBooking returnedBooking = response.readEntity(HotelBooking.class);
 			
 			client.close();
 			
@@ -83,7 +84,7 @@ public class TABookingService {
 		}
 	}
 	
-	public TaxiBooking makeTaxiBooking(TABooking booking){
+	public TaxiBooking makeTaxiBooking(TABooking booking) throws Exception{
 		
 		client = new ResteasyClientBuilder().build();
 		
@@ -113,7 +114,11 @@ public class TABookingService {
 				throw new InvalidCredentialsException("duplicate taxi booking provided");
 			}
 			
-			TaxiBooking returnedBooking = (TaxiBooking)response.getEntity();
+			if(response.getStatus() != 201){
+				throw new Exception("Unkown response code: " + response.getStatus());
+			}
+			
+			TaxiBooking returnedBooking = response.readEntity(TaxiBooking.class);
 			
 			client.close();
 			
@@ -138,5 +143,21 @@ public class TABookingService {
 		
 		flightBookingService.createBooking(flightBooking);
 		return flightBooking;
+	}
+	
+	public TABooking storeTABooking(TABooking booking){
+		return crud.createBooking(booking);
+	}
+	
+	public void rollBackHotel(Long id){
+		
+	}
+	
+	public void rollBackTaxi(Long id){
+		
+	}
+	
+	public void rollBackFlight(Long id){
+		
 	}
 }
