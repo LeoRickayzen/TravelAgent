@@ -148,12 +148,8 @@ public class CustomerTest {
     @Test
     @InSequence(7)
     public void testGetByInvalidId(){
-    	try{
-    		userRestService.findCustomer(2);
-        	fail("should throw RestServiceException");
-    	}catch(RestServiceException e){
-        	assertEquals(404, e.getStatus().getStatusCode());
-    	}
+    	Response response = userRestService.findCustomer(2);
+        assertEquals(204, response.getStatus());
     }
     
     public void cleanDB(){
