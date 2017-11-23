@@ -50,7 +50,8 @@ public class FlightTest {
 	@Inject
     FlightRestService flightRestService;
 	
-	@Inject EntityManager em;
+	@Inject 
+	EntityManager em;
 
     @Inject
     @Named("logger") Logger log;

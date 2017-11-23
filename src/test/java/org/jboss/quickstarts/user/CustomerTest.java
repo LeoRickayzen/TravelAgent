@@ -152,11 +152,6 @@ public class CustomerTest {
         assertEquals(204, response.getStatus());
     }
     
-    public void cleanDB(){
-    	em.clear();
-    	em.flush();
-    }
-    
     public Customer createUser(String firstname, String lastname, String email, String phonenumber, Date birthDate){
     	Customer user = new Customer();
     	user.setFirstName(firstname);
