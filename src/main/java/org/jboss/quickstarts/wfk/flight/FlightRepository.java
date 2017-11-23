@@ -8,6 +8,8 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
+import javax.validation.ConstraintViolationException;
+import javax.validation.ValidationException;
 
 public class FlightRepository {
 
@@ -22,7 +24,8 @@ public class FlightRepository {
 		return query.getResultList();
     }
     
-    public Flight createFlight(Flight flight){
+    public Flight createFlight(Flight flight) throws ConstraintViolationException, ValidationException, Exception{
+    	log.info("creating a flight");
     	em.persist(flight);
     	return flight;
     }

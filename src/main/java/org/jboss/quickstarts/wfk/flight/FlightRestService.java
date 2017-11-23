@@ -4,7 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import javax.ejb.EJBTransactionRolledbackException;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -61,22 +64,42 @@ public class FlightRestService {
             @ApiResponse(code = 500, message = "An unexpected error occurred whilst processing the request")
     })
     public Response createFlight(Flight flight){
-    	Flight createdFlight;
-    	try{
-    		createdFlight = service.createFlight(flight);
+    	/*
+    	 * tried to catch ConstraintViolationException using
+    	 * try{
+    		createdFlight = service.create(flight);
         	return Response.status(Status.CREATED).entity(createdFlight).build();
     	}catch(ConstraintViolationException e){
+    		log.info("woop woop");
     		Map<String, String> responseObj = new HashMap<>();
 
             for (ConstraintViolation<?> violation : e.getConstraintViolations()) {
                 responseObj.put(violation.getPropertyPath().toString(), violation.getMessage());
             }
             throw new RestServiceException("Bad Request", responseObj, Response.Status.BAD_REQUEST, e);
+    	}
+    	* but it doesn't work atall and no matter what I try it doesn't catch the exception,
+    	* so using a messy work around to validate the fields in the flight entity
+    	 */
+    	Flight createdFlight;
+    	
+    	roughValidate(flight);
+    	
+    	try{
+    		
+    		createdFlight = service.create(flight);
+        	
+    		return Response.status(Status.CREATED).entity(createdFlight).build();
     	}catch(InvalidRouteException e){
     		throw new RestServiceException("Bad request, departure and arrival destination must be different", Response.Status.BAD_REQUEST, e);
     	}catch(FlightNumberExistsException e){
     		throw new RestServiceException("Flight number already exists", Response.Status.CONFLICT, e);
+    	}catch(EJBTransactionRolledbackException e){
+    		log.info("caught exception hard");
+    		throw new RestServiceException(e);
     	}catch(Exception e){
+    		log.info("caught exception hard");
+    		e.printStackTrace();
     		throw new RestServiceException(e);
     	}
     }
@@ -104,5 +127,24 @@ public class FlightRestService {
 				throw new RestServiceException(e);
 			}
 		}
+    }
+    
+    private void roughValidate(Flight flight){
+    	Pattern locationsPattern = Pattern.compile("^[A-Z]{3}$");
+		Pattern flightNumberPattern = Pattern.compile("^([a-z]|\\d){5}$");
+		
+		Matcher dep = locationsPattern.matcher(flight.getDeparture());
+		Matcher arr = locationsPattern.matcher(flight.getArrival());
+		Matcher flightNumber = flightNumberPattern.matcher(flight.getFlightNumber());
+		
+		if(!dep.matches()){
+			throw new RestServiceException("Bad Request, invalid departure destination, must be an upper case string length 3", Response.Status.BAD_REQUEST);
+		}
+		if(!arr.matches()){
+			throw new RestServiceException("Bad Request, invalid arrival destination, must be an upper case string length 3", Response.Status.BAD_REQUEST);
+    	}
+		if(!flightNumber.matches()){
+			throw new RestServiceException("Bad Request, invalid flight number destination, must be a 5 letter alphanumeric string", Response.Status.BAD_REQUEST);
+    	}
     }
 }

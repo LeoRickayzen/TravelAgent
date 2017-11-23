@@ -5,6 +5,8 @@ import java.util.logging.Logger;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.validation.ConstraintViolationException;
+import javax.validation.ValidationException;
 
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
@@ -25,7 +27,7 @@ public class FlightService {
 		client = new ResteasyClientBuilder().build();
 	}
 	
-	public Flight createFlight(Flight flight) throws InvalidRouteException, FlightNumberExistsException{	
+	public Flight create(Flight flight) throws InvalidRouteException, FlightNumberExistsException, ConstraintViolationException, ValidationException, Exception{	
 		validator.validateFlight(flight);	
 		return crud.createFlight(flight);
 	}

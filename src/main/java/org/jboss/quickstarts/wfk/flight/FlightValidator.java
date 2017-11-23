@@ -7,7 +7,7 @@ public class FlightValidator {
 	@Inject
 	private FlightRepository crud;
 	
-	void validateFlight(Flight flight){
+	void validateFlight(Flight flight) throws InvalidRouteException, FlightNumberExistsException{
 		if(departIsDifferent(flight)){
 			throw new InvalidRouteException("departure and arrival destination must be different");
 		}
