@@ -19,7 +19,7 @@ public class TABookingRepository {
     private EntityManager em;
     
     TABooking findById(Long id){
-    	TypedQuery<TABooking> query = em.createNamedQuery(TABooking.FIND_BY_NUMBER, TABooking.class).setParameter(0, "number");
+    	TypedQuery<TABooking> query = em.createNamedQuery(TABooking.FIND_BY_NUMBER, TABooking.class).setParameter("number", id);
     	return query.getSingleResult();
     }
     

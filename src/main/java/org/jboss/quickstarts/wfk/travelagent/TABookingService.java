@@ -1,6 +1,7 @@
 package org.jboss.quickstarts.wfk.travelagent;
 
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.enterprise.context.Dependent;
@@ -149,21 +150,93 @@ public class TABookingService {
 		return crud.findById(tab.getId());
 	}
 	
+	public List<TABooking> getAllBookings(){
+		return crud.findAllBookings();
+	}
+	
 	public TABooking storeTABooking(TABooking booking){
 		return crud.createBooking(booking);
 	}
 	
-	public void rollBackHotel(Long id){
+	public HotelBooking rollBackHotel(Long id) throws Exception, InvalidCredentialsException{
+		client = new ResteasyClientBuilder().build();
+
+		ResteasyWebTarget hotelTarget = client.target("http://api-deployment-csc8104-130167853.7e14.starter-us-west-2.openshiftapps.com/api");
 		
+		HotelBookingService service = hotelTarget.proxy(HotelBookingService.class);
+		
+		try{
+			Response response = service.deleteBooking(id);
+			
+			log.info("code: " + response.getStatus());
+			
+			if(response.getStatus() == 400){
+				throw new InvalidCredentialsException("Invalid booking id supplied");
+			}
+			
+			if(response.getStatus() == 409){
+				throw new InvalidCredentialsException("Booking with that id not supplied");
+			}
+			
+			if(response.getStatus() != 204){
+				throw new Exception("Unkown response code: " + response.getStatus());
+			}
+			
+			HotelBooking returnedBooking = response.readEntity(HotelBooking.class);
+			
+			client.close();
+			
+			return returnedBooking;
+		}catch(ClientErrorException e){
+			return null;
+		}
 	}
 	
-	public void rollBackTaxi(Long id){
+	public TaxiBooking rollBackTaxi(Long id) throws Exception{
+		client = new ResteasyClientBuilder().build();
+
+		ResteasyWebTarget taxiTarget = client.target("http://api-deployment-csc8104-130277853.7e14.starter-us-west-2.openshiftapps.com/api");
 		
+		TaxiBookingService service = taxiTarget.proxy(TaxiBookingService.class);
+		
+		try{
+			Response response = service.deleteBooking(id);
+			
+			log.info("code: " + response.getStatus());
+			
+			if(response.getStatus() == 400){
+				throw new InvalidCredentialsException("Invalid booking id supplied");
+			}
+			
+			if(response.getStatus() == 409){
+				throw new InvalidCredentialsException("Booking with that id not supplied");
+			}
+			
+			if(response.getStatus() != 204){
+				throw new Exception("Unkown response code: " + response.getStatus());
+			}
+			
+			TaxiBooking returnedBooking = response.readEntity(TaxiBooking.class);
+			
+			client.close();
+			
+			return returnedBooking;
+		}catch(ClientErrorException e){
+			return null;
+		}
+	}
+	
+	public TABooking getBookingById(long id){
+		return crud.findById(id);
 	}
 	
 	public void rollBackFlight(Long id){
 		FlightBooking booking = new FlightBooking();
 		booking.setBookingNumber(id);
 		flightBookingService.deleteBooking(booking);
+	}
+
+	public void deleteTABooking(TABooking booking){
+		crud.deleteBooking(booking);
 	}
 }

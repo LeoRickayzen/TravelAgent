@@ -7,8 +7,10 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -45,6 +47,7 @@ public class TABookingRestService {
 		
 		try{
 			taxiBooking = service.makeTaxiBooking(booking);
+			booking.setTaxiBookingId(taxiBooking.getId());
 			log.info("taxi booking created: " + taxiBooking.toString());
 		}catch(InvalidCredentialsException e){
 			throw new RestServiceException("bad request: " + e.getMessage(), Response.Status.BAD_REQUEST, e);
@@ -54,11 +57,17 @@ public class TABookingRestService {
 		
 		try{
 			hotelBooking = service.makeHotelBooking(booking);
+			booking.setHotelBookingId(hotelBooking.getId());
 			log.info("hotel booking created: " + hotelBooking.toString());
 		}catch(InvalidCredentialsException e){
 			if(taxiBooking != null && taxiBooking.getId() != null){
-				service.rollBackTaxi(taxiBooking.getId());
-				throw new RestServiceException("bad request: " + e.getMessage(), Response.Status.BAD_REQUEST, e);
+				try{
+					service.rollBackTaxi(taxiBooking.getId());
+					throw new RestServiceException("bad request: " + e.getMessage(), Response.Status.BAD_REQUEST, e);
+				}catch(Exception ea){
+					ea.printStackTrace();
+					throw new RestServiceException("bad request: " + e.getMessage() + ", AND rollback failed because: " + ea.getMessage(), Response.Status.INTERNAL_SERVER_ERROR, ea);
+				}
 			}else{
 				throw new RestServiceException("bad request: " + e.getMessage() + ". And no id received", Response.Status.BAD_REQUEST, e);
 			}
@@ -68,28 +77,59 @@ public class TABookingRestService {
 		
 		try{
 			flightBooking = service.makeFlightBooking(booking);
+			booking.setFlightBookingId(flightBooking.getBookingNumber());
 		}catch(InvalidCredentialsException e){
 			if(taxiBooking != null && taxiBooking.getId() != null && hotelBooking != null && hotelBooking.getId() != null){
-				service.rollBackHotel(hotelBooking.getId());
-				service.rollBackTaxi(taxiBooking.getId());
-				throw new RestServiceException("bad request: " + e.getMessage(), Response.Status.BAD_REQUEST, e);
+				try{
+					service.rollBackHotel(hotelBooking.getId());
+					service.rollBackTaxi(taxiBooking.getId());
+					throw new RestServiceException("bad request: " + e.getMessage(), Response.Status.BAD_REQUEST, e);
+				}catch(Exception ea){
+					ea.printStackTrace();
+					throw new RestServiceException("bad request: " + e.getMessage() + ", AND rollback failed because: " + ea.getMessage(), Response.Status.INTERNAL_SERVER_ERROR, ea);
+				}
 			}else{
 				throw new RestServiceException("bad request: " + e.getMessage() + ". And no id received", Response.Status.BAD_REQUEST, e);
 			}
 		}
-		return Response.status(Status.CREATED).entity(booking).build();
+		
+		TABooking tab = service.storeTABooking(booking);
+		
+		return Response.status(Status.CREATED).entity(tab).build();
 	}
-
+	
+	@GET
+	public Response getAllBookings(){
+		return Response.status(Status.OK).entity(service.getAllBookings()).build();
+	}
+	
 	@DELETE
 	public Response deleteTABooking(TABooking booking){
-		
-		if(service.getFlightBooking(booking) != null){
-			service.rollBackFlight(booking.getFlightId());
-			service.rollBackHotel(booking.getHotelId());
-			service.rollBackTaxi(booking.getTaxiId());	
-			return Response.noContent().entity(booking).build();
+		TABooking bookingFull = service.getFlightBooking(booking);
+		if(bookingFull != null){
+			service.rollBackFlight(bookingFull.getFlightBookingId());
+			try{
+				service.rollBackHotel(bookingFull.getHotelBookingId());
+				service.rollBackTaxi(bookingFull.getTaxiBookingId());
+			}catch(Exception e){
+				e.printStackTrace();
+				throw new RestServiceException("bad request: " + e.getMessage() + ", rollback failed", Response.Status.BAD_REQUEST, e); 
+			}
+			service.deleteTABooking(bookingFull);
+			return Response.noContent().entity(bookingFull).build();
 		}else{
 			throw new RestServiceException("No booking with id " + booking.getId() + " found", Response.Status.NOT_FOUND);
+		}
+	}
+	
+	@GET
+	@Path("/{id:[0-9]+}")
+	public Response getBookingById(@PathParam("id")  Long id){
+		TABooking booking = service.getBookingById(id);
+		if(booking == null){
+			throw new RestServiceException("no booking with id + " + id + " found", Response.Status.NOT_FOUND);
+		}else{
+			return Response.ok().entity(booking).build();
 		}
 	}
 }

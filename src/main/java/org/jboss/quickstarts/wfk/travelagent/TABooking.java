@@ -43,12 +43,21 @@ public class TABooking implements Serializable {
 	
 	@Column(name = "taxiId")
 	private Long taxiId;
+	
+	@Column(name = "taxiBookingId")
+	private Long taxiBookingId;
 
 	@Column(name = "hotelId")
 	private Long hotelId;
 	
+	@Column(name = "hotelBookingId")
+	private Long hotelBookingId;
+	
 	@Column(name = "flightId")
 	private Long flightId;
+	
+	@Column(name = "flightBookingId")
+	private Long flightBookingId;
 	
 	@Column(name = "date")
 	private Date time;
@@ -77,12 +86,28 @@ public class TABooking implements Serializable {
 		this.taxiId = taxiId;
 	}
 
+	public Long getTaxiBookingId() {
+		return taxiBookingId;
+	}
+
+	public void setTaxiBookingId(Long taxiBookingId) {
+		this.taxiBookingId = taxiBookingId;
+	}
+
 	public Long getHotelId() {
 		return hotelId;
 	}
 
 	public void setHotelId(Long hotelId) {
 		this.hotelId = hotelId;
+	}
+	
+	public Long getHotelBookingId() {
+		return hotelBookingId;
+	}
+
+	public void setHotelBookingId(Long hotelBookingId) {
+		this.hotelBookingId = hotelBookingId;
 	}
 
 	public Long getFlightId() {
@@ -91,6 +116,14 @@ public class TABooking implements Serializable {
 
 	public void setFlightId(Long flightId) {
 		this.flightId = flightId;
+	}
+
+	public Long getFlightBookingId() {
+		return flightBookingId;
+	}
+
+	public void setFlightBookingId(Long flightBookingId) {
+		this.flightBookingId = flightBookingId;
 	}
 
 	public Date getTime() {
