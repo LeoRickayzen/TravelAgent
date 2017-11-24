@@ -24,6 +24,11 @@ public class BookingRepository {
     	return query.getResultList();
     }
     
+    List<FlightBooking> findByCustomerId(Long id){
+    	TypedQuery<FlightBooking> query = em.createNamedQuery(FlightBooking.FIND_BY_CUSTOMER, FlightBooking.class).setParameter("ids", id);
+    	return query.getResultList();
+    }
+    
     FlightBooking createBooking(FlightBooking booking){
     	em.persist(booking);
     	return booking;

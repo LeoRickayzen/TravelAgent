@@ -22,7 +22,8 @@ import org.jboss.quickstarts.wfk.flight.Flight;
 @Entity
 @NamedQueries({
 	@NamedQuery(name = FlightBooking.FIND_ALL, query = "SELECT b FROM FlightBooking b ORDER BY b.bookingNumber DESC"),
-	@NamedQuery(name = FlightBooking.FIND_BY_NUMBER, query = "SELECT b FROM FlightBooking b WHERE b.bookingNumber = :number")
+	@NamedQuery(name = FlightBooking.FIND_BY_NUMBER, query = "SELECT b FROM FlightBooking b WHERE b.bookingNumber = :number"),
+	@NamedQuery(name = FlightBooking.FIND_BY_CUSTOMER, query = "SELECT b FROM FlightBooking b WHERE B.customer.id = :ids")
 })
 @XmlRootElement
 @Table(name="FlightBooking", uniqueConstraints = {@UniqueConstraint(columnNames = "bookingNumber"), @UniqueConstraint(columnNames = {"flightBooked", "date"})})
@@ -30,6 +31,7 @@ public class FlightBooking {
 	
 	public static final String FIND_ALL = "Booking.findAll";
 	public static final String FIND_BY_NUMBER = "Booking.findByNumber";
+	public static final String FIND_BY_CUSTOMER = "Booking.findByCustomer";
 	
 	@Id
 	@Column(name = "bookingNumber")

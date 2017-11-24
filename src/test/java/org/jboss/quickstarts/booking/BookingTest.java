@@ -125,6 +125,23 @@ public class BookingTest {
     
     @Test
     @InSequence(4)
+    public void testGetByCustomerId(){
+    	assertEquals(200, bookingRestService.getBookingsForCustomer(1).getStatus());
+    }
+    
+    @Test
+    @InSequence(5)
+    public void testGetByWrongCustomerId(){
+    	try{
+        	bookingRestService.getBookingsForCustomer(4);
+        	assertTrue(true);
+    	}catch(RestServiceException e){
+    		assertEquals(404, e.getStatus().getStatusCode());
+    	}
+    }
+    
+    @Test
+    @InSequence(6)
     public void testSuccesfulBookingDeletion(){
     	FlightBooking booking = new FlightBooking();
     	booking.setBookingNumber(new Long(3));
@@ -132,7 +149,7 @@ public class BookingTest {
     }
     
     @Test
-    @InSequence(5)
+    @InSequence(7)
     public void testInvalidBookingDeletion(){
     	FlightBooking booking = new FlightBooking();
     	booking.setBookingNumber(new Long(4));
@@ -145,13 +162,13 @@ public class BookingTest {
     }
     
     @Test
-    @InSequence(6)
+    @InSequence(8)
     public void testGetAllBookings(){
     	assertEquals(200, bookingRestService.getBookings().getStatus());
     }
     
     @Test
-    @InSequence(7)
+    @InSequence(9)
     public void testUniqueConstraint(){
     	customerRestService.createCustomer(user);
     	flightRestService.createFlight(flight);

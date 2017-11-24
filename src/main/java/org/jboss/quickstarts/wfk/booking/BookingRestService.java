@@ -16,17 +16,20 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.jboss.quickstarts.wfk.customer.Customer;
+import org.jboss.quickstarts.wfk.customer.CustomerService;
 import org.jboss.quickstarts.wfk.flight.FlightService;
 import org.jboss.quickstarts.wfk.util.RestServiceException;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
@@ -41,6 +44,24 @@ public class BookingRestService {
     
     @Inject
     private BookingService service;
+    
+    @Inject
+    private CustomerService customerService;
+    
+    @GET
+    @ApiOperation(value = "Fetch all bookings for a given customer", notes = "Returns a JSON array of all bookings for that customer")
+    @Path("/{id}")
+    public Response getBookingsForCustomer(@ApiParam(value = "Id of user to fetch bookings for", allowableValues = "range[0, infinity]", required = true)
+	@PathParam("id") 
+	long id){
+    	if(customerService.findById(id) == null){
+    		throw new RestServiceException("no customer with that id found", Response.Status.NOT_FOUND);
+    	}else{
+    		List<FlightBooking> bookings = service.findByCustomerId(id);
+    		bookings.retainAll(service.findByCustomerId(id));
+    		return Response.ok(bookings).build();
+    	}
+    }
     
     @GET
     @ApiOperation(value = "Fetch all bookings", notes = "Returns a JSON array of all stored booking objects.")

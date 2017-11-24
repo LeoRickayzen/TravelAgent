@@ -45,7 +45,7 @@ public class CustomerService {
 	     return crud.findByEmail(email);
 	 }
 	 
-	 Customer findById(long id){
+	 public Customer findById(long id){
 	 	return crud.findById(id);
 	 }
 	 

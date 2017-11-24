@@ -46,6 +46,10 @@ public class BookingService {
 		return deletedBooking;
 	}
 	
+	public List<FlightBooking> findByCustomerId(Long id){
+		return crud.findByCustomerId(id);
+	}
+	
 	public FlightBooking findById(long id){
 		return crud.findByNumber(id);
 	}
