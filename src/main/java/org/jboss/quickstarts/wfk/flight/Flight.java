@@ -19,6 +19,7 @@ import javax.validation.constraints.Pattern;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.jboss.quickstarts.wfk.booking.FlightBooking;
+import org.jboss.quickstarts.wfk.travelagent.Booking;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

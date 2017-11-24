@@ -4,8 +4,9 @@ import java.io.Serializable;
 import java.util.Date;
 
 import org.jboss.quickstarts.wfk.taxi.TaxiBooking;
+import org.jboss.quickstarts.wfk.travelagent.Booking;
 
-public class HotelBooking implements Serializable{
+public class HotelBooking implements Serializable, Booking{
 
 	private static final long serialVersionUID = 1L;
 	

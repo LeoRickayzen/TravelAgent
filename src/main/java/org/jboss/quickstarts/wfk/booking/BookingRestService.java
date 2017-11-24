@@ -61,8 +61,6 @@ public class BookingRestService {
     public Response createBookings(FlightBooking booking){
     	try{
         	service.createBooking(booking);
-    	}catch(InvalidCredentialsException e){
-    		throw new RestServiceException(e.getMessage(), Response.Status.BAD_REQUEST, e);
     	}catch(ConstraintViolationException e){
     		Map<String, String> responseObj = new HashMap<>();
 
@@ -70,7 +68,10 @@ public class BookingRestService {
                 responseObj.put(violation.getPropertyPath().toString(), violation.getMessage());
             }
             throw new RestServiceException("Bad Request", responseObj, Response.Status.BAD_REQUEST, e);
+    	}catch(InvalidCredentialsException e){
+    		throw new RestServiceException(e.getMessage(), Response.Status.BAD_REQUEST, e);
     	}catch(Exception e){
+    		e.printStackTrace();
     		throw new RestServiceException(e.getMessage());
     	}
     	return Response.status(Status.CREATED).entity(booking).build();

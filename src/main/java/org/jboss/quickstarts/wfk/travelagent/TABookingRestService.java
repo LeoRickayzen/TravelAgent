@@ -38,27 +38,27 @@ public class TABookingRestService {
 	@Inject
 	TABookingService service;
 	
-	@POST
-	public Response createTABooking(TABooking booking){
-		
-		TaxiBooking taxiBooking = null;
-		HotelBooking hotelBooking = null;
-		FlightBooking flightBooking = null;
-		
+	private TaxiBooking makeTaxiBooking(TABooking booking){
+		TaxiBooking taxiBooking;
 		try{
 			taxiBooking = service.makeTaxiBooking(booking);
 			booking.setTaxiBookingId(taxiBooking.getId());
 			log.info("taxi booking created: " + taxiBooking.toString());
+			return taxiBooking;
 		}catch(InvalidCredentialsException e){
 			throw new RestServiceException("bad request: " + e.getMessage(), Response.Status.BAD_REQUEST, e);
 		}catch(Exception e){
 			throw new RestServiceException(e);
 		}
-		
+	}
+	
+	private HotelBooking makeHotelBooking(TABooking booking, TaxiBooking taxiBooking){
+		HotelBooking hotelBooking;
 		try{
 			hotelBooking = service.makeHotelBooking(booking);
 			booking.setHotelBookingId(hotelBooking.getId());
 			log.info("hotel booking created: " + hotelBooking.toString());
+			return hotelBooking;
 		}catch(InvalidCredentialsException e){
 			if(taxiBooking != null && taxiBooking.getId() != null){
 				try{
@@ -74,10 +74,14 @@ public class TABookingRestService {
 		}catch(Exception e){
 			throw new RestServiceException(e);
 		}
-		
+	}
+	
+	private FlightBooking makeFlightBooking(TABooking booking, TaxiBooking taxiBooking, HotelBooking hotelBooking){
+		FlightBooking flightBooking;
 		try{
 			flightBooking = service.makeFlightBooking(booking);
 			booking.setFlightBookingId(flightBooking.getBookingNumber());
+			return flightBooking;
 		}catch(InvalidCredentialsException e){
 			if(taxiBooking != null && taxiBooking.getId() != null && hotelBooking != null && hotelBooking.getId() != null){
 				try{
@@ -92,6 +96,17 @@ public class TABookingRestService {
 				throw new RestServiceException("bad request: " + e.getMessage() + ". And no id received", Response.Status.BAD_REQUEST, e);
 			}
 		}
+	}
+	
+	@POST
+	public Response createTABooking(TABooking booking){
+		
+		TaxiBooking taxiBooking = makeTaxiBooking(booking);
+		booking.setTaxiBookingId(taxiBooking.getId());
+		HotelBooking hotelBooking = makeHotelBooking(booking, taxiBooking);
+		booking.setHotelBookingId(hotelBooking.getId());
+		FlightBooking flightBooking = makeFlightBooking(booking, taxiBooking, hotelBooking);
+		booking.setFlightBookingId(flightBooking.getBookingNumber());
 		
 		TABooking tab = service.storeTABooking(booking);
 		

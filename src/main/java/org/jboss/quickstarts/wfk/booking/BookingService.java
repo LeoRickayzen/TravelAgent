@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.validation.ConstraintViolationException;
 
 import org.jboss.quickstarts.wfk.flight.Flight;
 import org.jboss.quickstarts.wfk.flight.FlightRepository;
@@ -20,14 +21,12 @@ public class BookingService {
 
 	@Inject
 	private BookingRepository crud;
-
-	private ResteasyClient client;
 	
 	List<FlightBooking> findAll(){
 		return crud.findAllBookings();
 	}
 	
-	public void createBooking(FlightBooking booking) throws InvalidCredentialsException{
+	public void createBooking(FlightBooking booking) throws InvalidCredentialsException, ConstraintViolationException{
 		validator.validateBooking(booking);
 		crud.createBooking(booking);
 	}

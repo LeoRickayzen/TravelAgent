@@ -150,6 +150,26 @@ public class BookingTest {
     	assertEquals(200, bookingRestService.getBookings().getStatus());
     }
     
+    @Test
+    @InSequence(7)
+    public void testUniqueConstraint(){
+    	customerRestService.createCustomer(user);
+    	flightRestService.createFlight(flight);
+    	FlightBooking booking = new FlightBooking();
+    	Customer customer = new Customer();
+    	customer.setId(new Long(1));
+    	Flight flight = new Flight();
+    	flight.setId(new Long(2));
+    	booking.setCustomer(customer);
+    	booking.setFlightBooked(flight);
+    	booking.setTime(date);
+    	try{
+    		bookingRestService.createBookings(booking).getStatus();
+    	}catch(RestServiceException e){
+    		assertEquals(409, e.getStatus().getStatusCode());
+    	}
+    }
+    
     public Flight createFlight(String arrival, String departure, String flightNumber){
     	Flight flight = new Flight();
     	flight.setArrival(arrival);

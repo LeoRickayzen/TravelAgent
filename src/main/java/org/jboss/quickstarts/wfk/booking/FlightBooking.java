@@ -25,7 +25,7 @@ import org.jboss.quickstarts.wfk.flight.Flight;
 	@NamedQuery(name = FlightBooking.FIND_BY_NUMBER, query = "SELECT b FROM FlightBooking b WHERE b.bookingNumber = :number")
 })
 @XmlRootElement
-@Table(name="FlightBooking", uniqueConstraints = @UniqueConstraint(columnNames = "bookingNumber"))
+@Table(name="FlightBooking", uniqueConstraints = {@UniqueConstraint(columnNames = "bookingNumber"), @UniqueConstraint(columnNames = {"flightBooked", "date"})})
 public class FlightBooking {
 	
 	public static final String FIND_ALL = "Booking.findAll";
