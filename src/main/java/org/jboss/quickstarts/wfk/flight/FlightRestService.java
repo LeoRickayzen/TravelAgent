@@ -34,6 +34,12 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+/**
+ * Provides RESTful functionality for flight crud operations
+ * 
+ * @author Leo Rickayzen
+ *
+ */
 @Path("/flights")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -46,6 +52,11 @@ public class FlightRestService {
     @Inject
     private FlightService service;
     
+    /**
+     * fetch all the flights from the database
+     * 
+     * @return a response consisting of all flights in the database
+     */
     @GET
     @ApiOperation(value = "Fetch all flights", notes = "Returns a JSON array of all stored flight objects.")
     public Response getFlights(){
@@ -54,6 +65,12 @@ public class FlightRestService {
 		return Response.ok(flights).build();
     }
     
+    /**
+     * Create a flight and store it in the database
+     * 
+     * @param the flight to be created
+     * @return the created flight object
+     */
     @POST
     @ApiOperation(value = "Create a flight")
     @ApiResponses(value = {
@@ -66,20 +83,22 @@ public class FlightRestService {
     public Response createFlight(Flight flight){
     	/*
     	 * tried to catch ConstraintViolationException using
-    	 * try{
-    		createdFlight = service.create(flight);
-        	return Response.status(Status.CREATED).entity(createdFlight).build();
-    	}catch(ConstraintViolationException e){
-    		log.info("woop woop");
-    		Map<String, String> responseObj = new HashMap<>();
-
-            for (ConstraintViolation<?> violation : e.getConstraintViolations()) {
-                responseObj.put(violation.getPropertyPath().toString(), violation.getMessage());
-            }
-            throw new RestServiceException("Bad Request", responseObj, Response.Status.BAD_REQUEST, e);
-    	}
-    	* but it doesn't work atall and no matter what I try it doesn't catch the exception,
-    	* so using a messy work around to validate the fields in the flight entity
+    	 *    	 
+    	 *    	try{
+    	 *    		createdFlight = service.create(flight);
+    	 *        	return Response.status(Status.CREATED).entity(createdFlight).build();
+    	 *    	}catch(ConstraintViolationException e){
+    	 *    		log.info("woop woop");
+    	 *    		Map<String, String> responseObj = new HashMap<>();
+    	 *
+    	 *            for (ConstraintViolation<?> violation : e.getConstraintViolations()) {
+    	 *                responseObj.put(violation.getPropertyPath().toString(), violation.getMessage());
+    	 *            }
+    	 *            throw new RestServiceException("Bad Request", responseObj, Response.Status.BAD_REQUEST, e);
+    	 *    	}
+    	 * 
+    	 * but it doesn't work atall and no matter what I try it doesn't catch the exception,
+    	 * so using a messy work around to validate the fields in the flight entity
     	 */
     	Flight createdFlight;
     	
@@ -104,6 +123,12 @@ public class FlightRestService {
     	}
     }
     
+    /**
+     * deleted a flight from the database
+     * 
+     * @param id of the flight to be deleted
+     * @return the deleted flight
+     */
     @DELETE
     @ApiOperation(value = "Delete a flight")
     @ApiResponses(value = {
@@ -129,6 +154,12 @@ public class FlightRestService {
 		}
     }
     
+    /**
+     * utility method which manually validates flight,
+     * explained in comments on line 85
+     * 
+     * @param the flight to be validated
+     */
     private void roughValidate(Flight flight){
     	Pattern locationsPattern = Pattern.compile("^[A-Z]{3}$");
 		Pattern flightNumberPattern = Pattern.compile("^([a-z]|\\d){5}$");

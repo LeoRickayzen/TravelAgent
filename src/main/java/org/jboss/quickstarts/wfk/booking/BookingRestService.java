@@ -33,6 +33,13 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+/**
+ * Provides restful functionality to the booking service
+ * Provides endpoints for a user booking a certain flight
+ * 
+ * @author Leo Rickayzen
+ *
+ */
 @Path("/bookings")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -48,6 +55,12 @@ public class BookingRestService {
     @Inject
     private CustomerService customerService;
     
+    /**
+     * returns all bookings for a given customer, given the customers id
+     * 
+     * @param id
+     * @return response containing a list of bookings made by that customer
+     */
     @GET
     @ApiOperation(value = "Fetch all bookings for a given customer", notes = "Returns a JSON array of all bookings for that customer")
     @Path("/{id}")
@@ -63,6 +76,11 @@ public class BookingRestService {
     	}
     }
     
+    /**
+     * returns a list of all bookings in the database
+     * 
+     * @return response is a list of all bookings in the database
+     */
     @GET
     @ApiOperation(value = "Fetch all bookings", notes = "Returns a JSON array of all stored booking objects.")
     public Response getBookings(){
@@ -71,6 +89,12 @@ public class BookingRestService {
     	return Response.ok(bookings).build();
     }
     
+    /**
+     * Create a booking from a booking object containing time, customer id, and flight id
+     * 
+     * @param booking
+     * @return a response consisting of the created booking
+     */
     @POST
     @ApiOperation(value = "Create a booking")
     @ApiResponses(value = {
@@ -98,6 +122,12 @@ public class BookingRestService {
     	return Response.status(Status.CREATED).entity(booking).build();
     }
     
+    /**
+     * delete a booking from the database
+     * 
+     * @param the booking to be deleted
+     * @return the deleted booking
+     */
     @DELETE
     @ApiOperation(value = "delete a booking")
     @ApiResponses(value = {

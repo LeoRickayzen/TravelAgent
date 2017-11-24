@@ -11,6 +11,11 @@ import javax.validation.ValidationException;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 
+/**
+ * Service level functionality for flights
+ * 
+ * @author Leo Rickayzen
+ */
 public class FlightService {
 	@Inject
 	private @Named("logger") Logger log;
@@ -27,15 +32,37 @@ public class FlightService {
 		client = new ResteasyClientBuilder().build();
 	}
 	
+	/**
+	 * validate and persist a flight
+	 * 
+	 * @param flight to create
+	 * @return flight created including the id
+	 * @throws InvalidRouteException when the destination and departure are the same
+	 * @throws FlightNumberExistsException when the flight number already exists
+	 * @throws ConstraintViolationException 
+	 * @throws ValidationException when for instance the flight number is a character too long
+	 * @throws Exception
+	 */
 	public Flight create(Flight flight) throws InvalidRouteException, FlightNumberExistsException, ConstraintViolationException, ValidationException, Exception{	
 		validator.validateFlight(flight);	
 		return crud.createFlight(flight);
 	}
 	
+	/**
+	 * get all flight records
+	 * 
+	 * @return a list of all flights
+	 */
 	List<Flight> findAll(){
 		return crud.findAllOrderedByNumber();
 	}
-
+	
+	/**
+	 * delete the flight from a database
+	 * 
+	 * @param flight to delete
+	 * @return the deleted flight
+	 */
 	public Flight deleteFlight(Flight flight) {
 		
 		log.info("delete() - Deleting " + flight.toString());
@@ -51,6 +78,12 @@ public class FlightService {
 		return deletedFlight;
 	}
 	
+	/**
+	 * find a flight by it's id
+	 * 
+	 * @param id
+	 * @return the flight given the id
+	 */
 	public Flight findById(long id){
 		return crud.findFlightById(id);
 	}

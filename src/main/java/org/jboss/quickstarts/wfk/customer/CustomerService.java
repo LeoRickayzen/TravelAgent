@@ -20,6 +20,11 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
+/**
+ * Provides service level functionality for customer entities
+ * 
+ * @author Leo Rickayzen
+ */
 public class CustomerService {
 
 	 @Inject
@@ -37,18 +42,44 @@ public class CustomerService {
 	     client = new ResteasyClientBuilder().build();
 	 }
 	 
+	 /**
+	  * returns a list of all customers ordered by name
+	  * 
+	  * @return list of all customers
+	  */
 	 List<Customer> findAll(){
 	 	return crud.findAllOrderedByName();
 	 }
 	 
+	 /**
+	  * Find a customer by their email
+	  * 
+	  * @param email the email to find the customer by
+	  * @return customer with corresponding email
+	  */
 	 Customer findByEmail(String email) {
 	     return crud.findByEmail(email);
 	 }
 	 
+	 /**
+	  * find a customer by their id
+	  * 
+	  * @param id of customer to find
+	  * @return customer with corresponding id
+	  */
 	 public Customer findById(long id){
 	 	return crud.findById(id);
 	 }
 	 
+	 /**
+	  * validate and persist a customer
+	  * 
+	  * @param customer to create
+	  * @return
+	  * @throws ConstraintViolationException when customer conflicts with another customer
+	  * @throws ValidationException when the customer provided conflicts with the validation rules defined in the entity
+	  * @throws Exception
+	  */
 	 public Customer create(Customer customer) throws ConstraintViolationException, ValidationException, Exception {
 	     log.info("ContactService.create() - Creating " + customer.getFirstName() + " " + customer.getLastName());
 	     
@@ -57,16 +88,13 @@ public class CustomerService {
 	     return crud.create(customer);
 	 }
 	 
-	 Customer update(Customer customer) throws ConstraintViolationException, ValidationException, Exception {
-	     log.info("ContactService.update() - Updating " + customer.getFirstName() + " " + customer.getLastName());
-	     
-	     // Check to make sure the data fits with the parameters in the Contact model and passes validation.
-	     validator.validateUser(customer);
-
-	     // Either update the contact or add it if it can't be found.
-	     return crud.update(customer);
-	 }
-	 
+	 /**
+	  * delete a customer from the database
+	  * 
+	  * @param customer to delete
+	  * @return the deleted customer
+	  * @throws Exception
+	  */
 	 Customer delete(Customer customer) throws Exception{
 		 log.info("delete() - Deleting " + customer.toString());
 
